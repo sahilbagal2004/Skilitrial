@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(180deg, #8fb0df, #6e8edc);
+  color: white;
+}
+
+.nav-links a {
+  margin-right: 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.btn-start {
+  background: orange;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: white;
+}
+.logo img {
+  height: 45px;
+}
