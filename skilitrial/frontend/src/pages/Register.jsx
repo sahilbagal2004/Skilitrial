@@ -13,6 +13,9 @@ function Register() {
     role: "candidate"
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -22,19 +25,25 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      await axios.post(
-        "http://localhost:5000/api/auth/register",
+      const res = await axios.post(
+        "https://zonia-metencephalic-grimacingly.ngrok-free.dev/api/auth/register",
         formData
       );
 
-      alert("Registered Successfully");
+      alert(res.data.message || "Registered Successfully");
+
       navigate("/login");
 
     } catch (err) {
-      alert("Registration Failed");
       console.log(err.response?.data);
+
+      setError(err.response?.data?.message || "Registration Failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,7 +81,11 @@ function Register() {
             <option value="recruiter">Recruiter</option>
           </select>
 
-          <button type="submit">Sign Up</button>
+          {error && <p className="error-text">{error}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Sign Up"}
+          </button>
         </form>
 
         <p className="login-text">

@@ -3,39 +3,39 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import logo from "../assets/logo.svg";
-
-
+import { BASE_URL } from "../config";
 
 function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        { email, password }
-      );
+  try {
+    const res = await axios.post(
+  `${BASE_URL}/api/auth/login`,
+  { email, password }
+);
 
-      console.log("Login Success:", res.data);
+    console.log("Login Success:", res.data);
 
-      alert("Login successful");
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // Save token if backend sends it
-      localStorage.setItem("token", res.data.token);
+    navigate("/dashboard");
 
-      navigate("/");
-
-    } catch (err) {
-      console.log("Login Error:", err.response?.data);
-      alert(err.response?.data?.message || "Login failed");
-    }
-  };
-
+  } catch (err) {
+    console.log("Login Error:", err.response?.data);
+    alert(err.response?.data?.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="login-container">
       <div className="login-card">
@@ -63,15 +63,17 @@ function Login() {
             required
           />
 
-          <button type="submit">Log In</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Log In"}
+          </button>
         </form>
 
         <p className="signup-text">
-  Don't have an account?{" "}
-  <Link to="/register" className="signup-link">
-    Sign Up
-  </Link>
-</p>
+          Don't have an account?{" "}
+          <Link to="/register" className="signup-link">
+            Sign Up
+          </Link>
+        </p>
 
       </div>
     </div>

@@ -6,6 +6,8 @@ export default defineConfig({
   server: {
     host: true,
     strictPort: true,
-    allowedHosts: ['.ngrok-free.dev']
+    hmr: {
+      host: true
+    }
   }
 })

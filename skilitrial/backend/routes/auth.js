@@ -2,6 +2,8 @@ const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middleware/auth");
+console.log("Auth routes loaded");
 
 // REGISTER
 router.post("/register", async (req, res) => {
@@ -31,7 +33,6 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 // LOGIN
 router.post("/login", async (req, res) => {
@@ -63,6 +64,16 @@ router.post("/login", async (req, res) => {
       }
     });
 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PROFILE (Protected)
+router.get("/profile", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
