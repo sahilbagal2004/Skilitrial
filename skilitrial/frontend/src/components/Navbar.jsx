@@ -6,24 +6,24 @@ function Navbar() {
   return (
     <nav className="navbar">
 
-      {/* LOGO → HOME */}
+      {/* LEFT - LOGO */}
       <Link to="/" className="logo">
         <img src={logo} alt="Skilitrial Logo" />
       </Link>
 
-      <Link to="/browse-trials" className="nav-link">
-        Browse Trials
-      </Link>
-
+      {/* CENTER - ALL LINKS */}
       <div className="nav-links">
+        <Link to="/browse-trials">Browse Trials</Link>
         <Link to="/">How It Works</Link>
         <Link to="/">Post a Job</Link>
         <Link to="/login">Log In</Link>
       </div>
 
+      {/* RIGHT - BUTTON */}
       <Link to="/register" className="btn-start">
         Get Started
       </Link>
+
     </nav>
   );
 }
