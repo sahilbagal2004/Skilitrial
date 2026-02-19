@@ -3,39 +3,44 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import logo from "../assets/logo.svg";
-import { BASE_URL } from "../config";
 
 function Login() {
   const navigate = useNavigate();
+
+  const API = import.meta.env.VITE_API_URL;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const API = import.meta.env.VITE_API_URL;
+    try {
+      const res = await axios.post(
+        `${API}/api/auth/login`,
+        {
+          email,
+          password
+        }
+      );
 
-axios.post(`${API}/api/auth/login`, formData)
+      console.log("Login Success:", res.data);
 
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-    console.log("Login Success:", res.data);
+      navigate("/dashboard");
 
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
+    } catch (err) {
+      console.log("Login Error:", err.response?.data);
+      alert(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    navigate("/dashboard");
-
-  } catch (err) {
-    console.log("Login Error:", err.response?.data);
-    alert(err.response?.data?.message || "Login failed");
-  } finally {
-    setLoading(false);
-  }
-};
   return (
     <div className="login-container">
       <div className="login-card">
