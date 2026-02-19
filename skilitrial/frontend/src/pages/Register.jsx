@@ -24,28 +24,30 @@ function Register() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-    try {
-      const API = import.meta.env.VITE_API_URL;
+  try {
+    const API = import.meta.env.VITE_API_URL;
 
-axios.post(`${API}/api/auth/login`, formData)
+    const res = await axios.post(
+      `${API}/api/auth/register`,
+      formData
+    );
 
+    alert(res.data.message || "Registered Successfully");
 
-      alert(res.data.message || "Registered Successfully");
+    navigate("/login");
 
-      navigate("/login");
+  } catch (err) {
+    console.log(err.response?.data);
+    setError(err.response?.data?.message || "Registration Failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    } catch (err) {
-      console.log(err.response?.data);
-
-      setError(err.response?.data?.message || "Registration Failed");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="register-container">
