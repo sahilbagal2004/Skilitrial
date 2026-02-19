@@ -6,27 +6,29 @@ function Profile() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const API = import.meta.env.VITE_API_URL;
 
-        const res = await axios.get(
-          "http://localhost:5000/api/auth/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+      const res = await axios.get(
+        `${API}/api/auth/profile`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
+        }
+      );
 
-        setUser(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    fetchProfile();
-  }, []);
+  fetchProfile();
+}, []);
+
 
   if (!user) return <div className="profile-loading">Loading...</div>;
 
