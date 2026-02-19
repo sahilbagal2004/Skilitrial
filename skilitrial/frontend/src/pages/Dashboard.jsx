@@ -10,32 +10,35 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-        const profileRes = await axios.get(
-          "http://localhost:5000/api/auth/profile",
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+      const API = import.meta.env.VITE_API_URL;
 
-        setUser(profileRes.data);
+      const profileRes = await axios.get(
+        `${API}/api/auth/profile`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
 
-        // Dummy job data (replace later with real API)
-        setJobs([
-          { id: 1, title: "Frontend Developer", company: "Google" },
-          { id: 2, title: "Backend Developer", company: "Amazon" },
-          { id: 3, title: "Data Analyst", company: "TCS" }
-        ]);
+      setUser(profileRes.data);
 
-      } catch (err) {
-        navigate("/login");
-      }
-    };
+      setJobs([
+        { id: 1, title: "Frontend Developer", company: "Google" },
+        { id: 2, title: "Backend Developer", company: "Amazon" },
+        { id: 3, title: "Data Analyst", company: "TCS" }
+      ]);
 
-    fetchData();
-  }, [navigate]);
+    } catch (err) {
+      console.log("Dashboard Error:", err.response?.data);
+      navigate("/login");
+    }
+  };
 
+  fetchData();
+}, [navigate]);
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
