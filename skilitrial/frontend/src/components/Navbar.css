@@ -2,17 +2,26 @@
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;          /* VERY IMPORTANT */
+  height: 80px;
   width: 100%;
-  z-index: 1000;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 20px 40px;   /* slightly reduced from 60px */
+  padding: 0 60px;
   background: linear-gradient(180deg, #8fb0df, #6e8edc);
+  z-index: 1000;
+}
 
-  transition: transform 0.3s ease-in-out;
+/* Prevent overflow issues */
+body {
+  overflow-x: hidden;
+}
+
+.main-content {
+  margin-top: 80px;
 }
 
 * {

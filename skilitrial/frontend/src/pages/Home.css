@@ -1,23 +1,37 @@
 /* GLOBAL */
 section {
   width: 100%;
+  margin: 0;
 }
-/* HERO SECTION */
+
+/* HERO */
 .hero {
   width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(180deg, #8fb0df, #3b6fd8);
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(to bottom, #8fb0df, #4f73c7);
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-
 .hero-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+}
+
+/* Centered content inside hero */
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* LEFT SIDE */
