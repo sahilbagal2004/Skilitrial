@@ -1,17 +1,35 @@
 import "./Navbar.css";
 import logo from "../assets/logo.svg";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function Navbar() {
-  return (
-    <nav className="navbar">
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-      {/* LEFT - LOGO */}
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setShowNavbar(false); // scrolling down
+      } else {
+        setShowNavbar(true); // scrolling up
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
+
+  return (
+    <nav className={`navbar ${showNavbar ? "show" : "hide"}`}>
       <Link to="/" className="logo">
         <img src={logo} alt="Skilitrial Logo" />
       </Link>
 
-      {/* CENTER - ALL LINKS */}
       <div className="nav-links">
         <Link to="/browse-trials">Browse Trials</Link>
         <Link to="/">How It Works</Link>
@@ -19,11 +37,9 @@ function Navbar() {
         <Link to="/login">Log In</Link>
       </div>
 
-      {/* RIGHT - BUTTON */}
       <Link to="/register" className="btn-start">
         Get Started
       </Link>
-
     </nav>
   );
 }
