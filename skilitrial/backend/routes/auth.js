@@ -36,22 +36,28 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
   try {
+    console.log("Login Request Body:", req.body);
+
     const { email, password } = req.body;
 
-    // 1️⃣ Check if email and password provided
+    // 1️⃣ Check if email & password provided
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password required" });
     }
 
     // 2️⃣ Find user
     const user = await User.findOne({ email });
+    console.log("User Found:", user);
+
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // 3️⃣ Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    const validPassword = await bcrypt.compare(password, user.password);
+    console.log("Password Match Result:", validPassword);
+
+    if (!validPassword) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
@@ -61,6 +67,8 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
+
+    console.log("Login Successful");
 
     // 5️⃣ Send response
     res.status(200).json({
