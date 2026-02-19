@@ -17,9 +17,11 @@ app.use(cors(corsOptions)); // ✅ This is enough
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URI, {
+  dbName: "skilitrial_v2"
+})
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log(err));
 
 app.get("/", (req, res) => {
   res.send("API Running");
