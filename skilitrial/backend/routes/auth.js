@@ -36,50 +36,48 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
   try {
-    console.log("Login Request Body:", req.body);
-
     const { email, password } = req.body;
 
+    // 1️⃣ Check if email and password provided
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password required" });
+    }
+
+    // 2️⃣ Find user
     const user = await User.findOne({ email });
-    console.log("User Found:", user);
-
     if (!user) {
-      console.log("No user found with this email");
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
-    console.log("Password Match Result:", validPassword);
-
-    if (!validPassword) {
-      console.log("Password does not match");
+    // 3️⃣ Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // 4️⃣ Create token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    console.log("Login Successful");
-
+    // 5️⃣ Send response
     res.status(200).json({
       token,
       user: {
         id: user._id,
         name: user.name,
+        email: user.email,
         role: user.role
       }
     });
 
-  } catch (err) {
-    console.log("Login Error:", err);
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
-
-
 // PROFILE (Protected)
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
