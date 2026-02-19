@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth");
 
+console.log("Auth routes loaded");
+
 // ================= REGISTER =================
 router.post("/register", async (req, res) => {
   try {
