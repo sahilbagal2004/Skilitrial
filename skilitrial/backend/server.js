@@ -5,10 +5,14 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({
-  origin: "*"
-}));
+const corsOptions = {
+  origin: true,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
 
+app.use(cors(corsOptions)); // ✅ This is enough
 
 app.use(express.json());
 
@@ -19,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.get("/", (req, res) => {
   res.send("API Running");
 });
+
 app.get("/test", (req, res) => {
   res.send("Backend test working");
 });
