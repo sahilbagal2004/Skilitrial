@@ -26,31 +26,31 @@ function App() {
     <>
       {location.pathname !== "/login" &&
        location.pathname !== "/register" && <Navbar />}
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  <Route path="/browse-trials" element={<BrowseTrials />} />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/browse-trials" element={<BrowseTrials />} />
-        <Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  }
-/>
-        {/* 🔐 Protected Profile Route */}
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+  <Route
+    path="/dashboard"
+    element={
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    }
+  />
+
+  <Route
+    path="/profile"
+    element={
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    }
+  />
+</Routes>
+
     </>
   );
 }
