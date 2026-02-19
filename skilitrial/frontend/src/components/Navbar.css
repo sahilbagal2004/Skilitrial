@@ -1,8 +1,19 @@
+/* GLOBAL FIX */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* ================= NAVBAR ================= */
+
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;          /* VERY IMPORTANT */
+  right: 0;              /* ensures full stretch */
   height: 80px;
   width: 100%;
 
@@ -11,37 +22,39 @@
   align-items: center;
 
   padding: 0 60px;
-  background: linear-gradient(180deg, #8fb0df, #6e8edc);
+  background: rgba(37, 99, 235, 0.9);
+  backdrop-filter: blur(12px);
+  color: white;
+
   z-index: 1000;
+  transition: transform 0.3s ease-in-out;
 }
 
-/* Prevent overflow issues */
-body {
-  overflow-x: hidden;
+/* Scroll hide/show */
+.navbar.show {
+  transform: translateY(0);
 }
 
-.main-content {
-  margin-top: 80px;
+.navbar.hide {
+  transform: translateY(-100%);
 }
 
-* {
-  box-sizing: border-box;
-}
-
-/* Logo */
-.logo img {
-  height: 45px;
-}
+/* ================= LOGO ================= */
 
 .logo {
   text-decoration: none;
 }
 
-/* Center Navigation Links */
+.logo img {
+  height: 45px;
+}
+
+/* ================= NAV LINKS ================= */
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 35px;   /* 🔥 FIXES SPACING PROPERLY */
+  gap: 35px;
 }
 
 .nav-links a {
@@ -49,18 +62,32 @@ body {
   color: white;
   font-weight: 500;
   font-size: 16px;
+  position: relative;
   transition: 0.3s ease;
 }
 
-.nav-links a:hover {
-  opacity: 0.8;
+/* Hover underline animation */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: white;
+  transition: width 0.3s ease;
 }
 
-/* Get Started Button */
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ================= BUTTON ================= */
+
 .btn-start {
-  background: orange;
-  padding: 10px 20px;
-  border-radius: 6px;
+  background: #f97316;
+  padding: 10px 22px;
+  border-radius: 8px;
   text-decoration: none;
   color: white;
   font-weight: 600;
@@ -68,34 +95,18 @@ body {
 }
 
 .btn-start:hover {
+  background: #ea580c;
   transform: translateY(-2px);
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 768px) {
   .navbar {
-    padding: 15px 20px;
+    padding: 0 20px;
   }
 
   .nav-links {
     gap: 20px;
   }
-}
-.navbar {
-  position: fixed;   /* Important */
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* When scrolling up */
-.navbar.show {
-  transform: translateY(0);
-}
-
-/* When scrolling down */
-.navbar.hide {
-  transform: translateY(-100%);
 }
