@@ -21,6 +21,7 @@ function Profile() {
       );
 
       setUser(res.data);
+
     } catch (err) {
       console.log(err);
     }
@@ -28,6 +29,7 @@ function Profile() {
 
   fetchProfile();
 }, []);
+
 
 
   if (!user) return <div className="profile-loading">Loading...</div>;
