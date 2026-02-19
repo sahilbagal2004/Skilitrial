@@ -3,9 +3,8 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth");
-console.log("Auth routes loaded");
 
-// REGISTER
+// ================= REGISTER =================
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -29,48 +28,37 @@ router.post("/register", async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
 
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("Register Error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
-// LOGIN
+
+// ================= LOGIN =================
 router.post("/login", async (req, res) => {
   try {
-    console.log("Login Request Body:", req.body);
-
     const { email, password } = req.body;
 
-    // 1️⃣ Check if email & password provided
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password required" });
     }
 
-    // 2️⃣ Find user
     const user = await User.findOne({ email });
-    console.log("User Found:", user);
-
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // 3️⃣ Compare password
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log("Password Match Result:", validPassword);
-
     if (!validPassword) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // 4️⃣ Create token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    console.log("Login Successful");
-
-    // 5️⃣ Send response
     res.status(200).json({
       token,
       user: {
@@ -86,13 +74,15 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-// PROFILE (Protected)
+
+// ================= PROFILE =================
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("Profile Error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
