@@ -5,9 +5,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
-    strictPort: true,
-    hmr: {
-      host: true
-    }
+    port: 5173,
+    allowedHosts: [
+      'zonia-metencephalic-grimacingly.ngrok-free.dev'
+    ]
   }
 })

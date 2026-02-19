@@ -17,10 +17,10 @@ function Login() {
   setLoading(true);
 
   try {
-    const res = await axios.post(
-  `${BASE_URL}/api/auth/login`,
-  { email, password }
-);
+    const API = import.meta.env.VITE_API_URL;
+
+axios.post(`${API}/api/auth/login`, formData)
+
 
     console.log("Login Success:", res.data);
 

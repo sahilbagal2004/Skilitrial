@@ -29,10 +29,10 @@ function Register() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "https://zonia-metencephalic-grimacingly.ngrok-free.dev/api/auth/register",
-        formData
-      );
+      const API = import.meta.env.VITE_API_URL;
+
+axios.post(`${API}/api/auth/login`, formData)
+
 
       alert(res.data.message || "Registered Successfully");
 

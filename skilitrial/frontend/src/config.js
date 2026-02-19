@@ -1,1 +1,1 @@
-export const BASE_URL = "https://filter-weapon-testament-designs.trycloudflare.com";
+export const BASE_URL = "http://localhost:5000";

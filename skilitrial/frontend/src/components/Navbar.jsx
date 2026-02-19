@@ -1,16 +1,21 @@
-import { Link } from "react-router-dom";
 import "./Navbar.css";
 import logo from "../assets/logo.svg";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">
+
+      {/* LOGO → HOME */}
+      <Link to="/" className="logo">
         <img src={logo} alt="Skilitrial Logo" />
-      </div>
+      </Link>
+
+      <Link to="/browse-trials" className="nav-link">
+        Browse Trials
+      </Link>
 
       <div className="nav-links">
-        <Link to="/">Browse Trials</Link>
         <Link to="/">How It Works</Link>
         <Link to="/">Post a Job</Link>
         <Link to="/login">Log In</Link>
@@ -24,4 +29,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

@@ -23,3 +23,19 @@
 .logo img {
   height: 45px;
 }
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+.logo {
+  text-decoration: none;
+}
