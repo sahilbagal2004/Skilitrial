@@ -11,9 +11,14 @@ function Dashboard() {
 
   useEffect(() => {
   const fetchData = async () => {
-    try {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
       const API = import.meta.env.VITE_API_URL;
 
       const profileRes = await axios.get(
@@ -33,17 +38,23 @@ function Dashboard() {
 
     } catch (err) {
       console.log("Dashboard Error:", err.response?.data);
-      navigate("/login");
+
+      // Only logout if token is invalid (401)
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+      }
     }
   };
 
   fetchData();
 }, [navigate]);
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
 
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  navigate("/login");
+};
   const filteredJobs = jobs.filter(job =>
     job.title.toLowerCase().includes(search.toLowerCase())
   );
