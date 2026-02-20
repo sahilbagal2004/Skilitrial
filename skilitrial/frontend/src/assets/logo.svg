@@ -16,17 +16,7 @@
         font-size="95" 
         font-weight="700" 
         font-family="Segoe UI, Arial, sans-serif" 
-        fill="#000000">
+        fill="#ffffff">
         Skilitrial
   </text>
-
-  <!-- Tagline -->
-  <text x="50" y="150" 
-        font-size="20" 
-        letter-spacing="5" 
-        font-family="Segoe UI, Arial, sans-serif" 
-        fill="#555">
-        PROVE YOUR SKILLS. GET HIRED.
-  </text>
-
 </svg>
