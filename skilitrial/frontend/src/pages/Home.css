@@ -47,15 +47,14 @@ section {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 120px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 60px;
-  position: relative;
-  z-index: 2;
-}
 
+  padding: 120px 40px;
+
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 80px;
+}
 /* LEFT SIDE */
 
 .hero-left {
@@ -135,31 +134,44 @@ section {
 /* RIGHT SIDE */
 
 .hero-right {
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fadeUp 1.2s ease forwards;
+  position: relative;
 }
-
+.hero-right::before {
+  content: "";
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(139,92,246,0.4), transparent 70%);
+  filter: blur(120px);
+  z-index: -1;
+}
 .single-card {
-  width: 480px;
-  background: white;
-  border-radius: 28px;
+  width: 100%;
+  max-width: 520px;
+
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.35),
+    0 0 120px rgba(99,102,241,0.25);
+
   transition: 0.4s ease;
 }
 
 .single-card:hover {
-  transform: translateY(-12px);
+  transform: translateY(-10px);
 }
 .single-card img {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
-  transform: translateY(0);
-  transition: transform 0.4s ease;
+  height: auto;
+  display: block;
 }
 
 .hero:hover .single-card img {
