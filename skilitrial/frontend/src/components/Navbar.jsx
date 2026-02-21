@@ -25,23 +25,24 @@ function Navbar() {
   }, [lastScrollY]);
 
   return (
-    <nav className={`navbar ${showNavbar ? "show" : "hide"}`}>
-      <Link to="/" className="logo">
-        <img src={logo} alt="Skilitrial Logo" />
-      </Link>
+  <nav className={`navbar ${showNavbar ? "show" : "hide"}`}>
+    <Link to="/" className="logo">
+      <img src={logo} alt="Skilitrial Logo" />
+    </Link>
 
-      <div className="nav-links">
-        <Link to="/browse-trials">Browse Trials</Link>
-        <Link to="/">How It Works</Link>
-        <Link to="/">Post a Job</Link>
-        <Link to="/login">Log In</Link>
-      </div>
+    <div className="nav-links">
+      <Link to="/browse-trials">Browse Trials</Link>
+      <Link to="/">How It Works</Link>
+      <Link to="/">Post a Job</Link>
+      <Link to="/login">Log In</Link>
 
+      {/* 🔥 MOVE BUTTON INSIDE HERE */}
       <Link to="/register" className="btn-start">
         Get Started
       </Link>
-    </nav>
-  );
+    </div>
+  </nav>
+);
 }
 
 export default Navbar;

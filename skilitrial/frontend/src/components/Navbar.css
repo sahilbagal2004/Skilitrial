@@ -1,53 +1,92 @@
+/* ================= NAVBAR ================= */
+
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
   height: 80px;
 
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: center;      /* vertical center */
 
   padding: 0 60px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  color: white;
+
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 
   z-index: 1000;
-  transition: 0.3s ease;
 }
+
+/* ================= LOGO ================= */
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
 .logo img {
   height: 45px;
   filter: brightness(0) invert(1);
 }
 
+/* ================= NAV LINKS ================= */
+
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 35px;
+
+  margin-left: 50px;   /* spacing after logo */
 }
 
+/* NORMAL LINKS */
 .nav-links a {
+  display: flex;
+  align-items: center;
+
   color: #e5e7eb;
   text-decoration: none;
   font-weight: 500;
-  transition: 0.3s;
+  font-size: 16px;
+
+  transition: 0.3s ease;
 }
 
 .nav-links a:hover {
   color: #f59e0b;
 }
 
+/* GET STARTED BUTTON */
 .btn-start {
-  background: #f59e0b;
+  padding: 10px 26px;
+
+  background: linear-gradient(135deg, #f59e0b, #f97316);
   color: white;
-  padding: 10px 22px;
-  border-radius: 8px;
   font-weight: 600;
-  transition: 0.3s;
+
+  border-radius: 12px;
+  text-decoration: none;
+
+  transition: 0.3s ease;
 }
 
 .btn-start:hover {
-  background: #d97706;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(249,115,22,0.4);
+}
+
+/* ================= SCROLL ANIMATION ================= */
+
+.navbar.hide {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.navbar.show {
+  transform: translateY(0);
+  transition: transform 0.3s ease;
 }
