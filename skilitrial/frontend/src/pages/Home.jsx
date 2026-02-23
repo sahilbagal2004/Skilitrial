@@ -1,5 +1,6 @@
 import "./Home.css";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";   // ✅ ADD THIS
 import heroImage from "../assets/skilitrial-hero-optimized.jpg";
 import javaImg from "../assets/trial-java.jpg";
 import supportImg from "../assets/trial-support.jpg";
@@ -129,7 +130,9 @@ function Home() {
         </p>
 
         <div className="cta-buttons">
-          <button className="btn-primary">Join Now for Free</button>
+          <Link to="/register" className="btn-primary">
+  Join Now for Free
+</Link>
           <button className="btn-outline">Find Talent</button>
         </div>
       </section>
