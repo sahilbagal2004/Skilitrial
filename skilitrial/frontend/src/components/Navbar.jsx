@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false); // 🔥 Added
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,24 +26,51 @@ function Navbar() {
   }, [lastScrollY]);
 
   return (
-  <nav className={`navbar ${showNavbar ? "show" : "hide"}`}>
-    <Link to="/" className="logo">
-      <img src={logo} alt="Skilitrial Logo" />
-    </Link>
+    <nav className={`navbar ${showNavbar ? "show" : "hide"}`}>
 
-    <div className="nav-links">
-      <Link to="/browse-trials">Browse Trials</Link>
-      <Link to="/">How It Works</Link>
-      <Link to="/">Post a Job</Link>
-      <Link to="/login">Log In</Link>
-
-      {/* 🔥 MOVE BUTTON INSIDE HERE */}
-      <Link to="/register" className="btn-start">
-        Get Started
+      {/* LOGO */}
+      <Link to="/" className="logo">
+        <img src={logo} alt="Skilitrial Logo" />
       </Link>
-    </div>
-  </nav>
-);
+
+      {/* HAMBURGER ICON */}
+      <div
+        className="hamburger"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        ☰
+      </div>
+
+      {/* NAV LINKS */}
+      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
+
+        <Link to="/browse-trials" onClick={() => setMenuOpen(false)}>
+          Browse Trials
+        </Link>
+
+        <Link to="/" onClick={() => setMenuOpen(false)}>
+          How It Works
+        </Link>
+
+        <Link to="/" onClick={() => setMenuOpen(false)}>
+          Post a Job
+        </Link>
+
+        <Link to="/login" onClick={() => setMenuOpen(false)}>
+          Log In
+        </Link>
+
+        <Link
+          to="/register"
+          className="btn-start"
+          onClick={() => setMenuOpen(false)}
+        >
+          Get Started
+        </Link>
+
+      </div>
+    </nav>
+  );
 }
 
 export default Navbar;
