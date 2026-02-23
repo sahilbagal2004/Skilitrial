@@ -1,100 +1,169 @@
+/* ================= BASE ================= */
+
 .dashboard {
   display: flex;
-  height: 100vh;
-  background: #f4f6fb;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  background: #f3f2ef;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 230px;
-  background: #1c3f94;
-  color: white;
-  padding: 20px;
+/* ================= SIDEBAR ================= */
+
+.dashboard > ul {
+  width: 240px;
+  background: #ffffff;
+  list-style: none;
+  padding: 25px 15px;
+  margin: 0;
+  border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  transition: 0.3s;
 }
 
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar li {
-  margin-bottom: 20px;
+.dashboard > ul li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+  color: #374151;
+  transition: 0.2s ease;
 }
 
-.logout-btn {
-  background: #ff4d4d;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
+.dashboard > ul li:hover {
+  background: #eef3f8;
 }
 
-/* MAIN */
+.dashboard > ul li.active {
+  background: #e8f0fe;
+  color: #0a66c2;
+  font-weight: 600;
+}
+
+/* ================= MAIN ================= */
+
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* TOPBAR */
+/* ================= TOPBAR ================= */
+
 .topbar {
-  background: white;
+  background: #ffffff;
   padding: 15px 25px;
   display: flex;
   justify-content: space-between;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .topbar input {
-  width: 300px;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  width: 350px;
+  max-width: 100%;
+  padding: 9px 14px;
+  border-radius: 20px;
+  border: 1px solid #d1d5db;
+  background: #eef3f8;
 }
 
-/* CONTENT */
+/* ================= CONTENT ================= */
+
 .content {
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  gap: 25px;
+  padding: 25px;
 }
+
+/* ================= LEFT PANEL ================= */
 
 .left-panel {
   flex: 2;
 }
+
+/* ================= JOB CARD ================= */
+
+.job-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #e5e7eb;
+  transition: 0.2s ease;
+}
+
+.job-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.job-card button {
+  background: #0a66c2;
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* ================= RIGHT PANEL ================= */
 
 .right-panel {
   flex: 1;
   background: white;
   padding: 20px;
   border-radius: 12px;
+  border: 1px solid #e5e7eb;
   height: fit-content;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.job-card {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .right-panel {
+    width: 100%;
+  }
 }
 
-.job-card button {
-  margin-top: 10px;
-  background: #1c3f94;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
+@media (max-width: 768px) {
 
-.loading {
-  padding: 50px;
-  text-align: center;
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .dashboard > ul {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .dashboard > ul li {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar input {
+    width: 100%;
+  }
+
+  .content {
+    padding: 15px;
+  }
 }

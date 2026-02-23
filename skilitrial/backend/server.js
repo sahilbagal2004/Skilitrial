@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 console.log("Mongo URI:", process.env.MONGO_URI);
+const jobRoutes = require("./routes/jobs");
 
 const app = express();
 
@@ -16,6 +17,8 @@ const corsOptions = {
 app.use(cors(corsOptions)); // ✅ This is enough
 
 app.use(express.json());
+
+app.use("/api/jobs", jobRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   dbName: "skilitrial_v2"
