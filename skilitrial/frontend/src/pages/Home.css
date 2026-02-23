@@ -300,4 +300,89 @@ section {
     opacity: 1;
     transform: translateY(0);
   }
+}/* ================= MOBILE FIX (PROPER PHONE OPTIMIZATION) ================= */
+
+@media (max-width: 768px) {
+
+  /* Reduce global section padding */
+  section {
+    padding: 70px 20px;
+  }
+
+  /* HERO */
+  .hero {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+
+  .hero-left h1 {
+    font-size: 34px;
+    line-height: 1.25;
+  }
+
+  .hero-left p {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .hero-right img {
+    max-width: 100%;
+    margin-top: 30px;
+  }
+
+  /* HOW SECTION */
+  .how-section h2 {
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+
+  .how-card {
+    padding: 30px 20px;
+  }
+
+  /* FEATURED */
+  .featured {
+    padding: 70px 20px;
+  }
+
+  .featured h2 {
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+
+  .card img {
+    height: 180px;
+  }
+
+  /* CTA */
+  .cta {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .cta h2 {
+    font-size: 26px;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .footer-columns {
+    flex-direction: column;
+    gap: 30px;
+  }
 }
