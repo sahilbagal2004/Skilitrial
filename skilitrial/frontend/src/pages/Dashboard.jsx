@@ -100,7 +100,14 @@ function Dashboard() {
                 <p style={{ color: "#0a66c2", fontWeight: "600" }}>
                   {job.salary}
                 </p>
-                <button>Apply</button>
+                <a
+  href={job.applyLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="apply-btn"
+>
+  Apply
+</a>
               </div>
             ))}
 

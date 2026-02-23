@@ -10,7 +10,8 @@ const jobSchema = new mongoose.Schema({
     required: true
   },
   location: String,
-  salary: String
+  salary: String,
+  applyLink: String   // 👈 NEW FIELD
 }, { timestamps: true });
 
 module.exports = mongoose.model("Job", jobSchema);

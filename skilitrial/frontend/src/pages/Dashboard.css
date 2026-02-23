@@ -167,3 +167,17 @@
     padding: 15px;
   }
 }
+.apply-btn {
+  display: inline-block;
+  background: #0a66c2;
+  color: white;
+  padding: 7px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.apply-btn:hover {
+  background: #004182;
+}
