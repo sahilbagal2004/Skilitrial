@@ -4,7 +4,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 92%;
   height: 80px;
 
   display: flex;
@@ -39,8 +39,9 @@
   display: flex;
   align-items: center;
   gap: 35px;
+  margin-left: auto;   /* pushes links to right properly */
+  margin-right: 20px;  /* adds space from right edge */
 }
-
 /* NORMAL LINKS */
 .nav-links a {
   color: #e5e7eb;
