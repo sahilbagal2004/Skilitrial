@@ -2,12 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Briefcase,
-  FileText,
-  BarChart3
-} from "lucide-react";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -16,36 +10,53 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return navigate("/login");
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
 
-      try {
-        const API = import.meta.env.VITE_API_URL;
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
-        const profileRes = await axios.get(
-          `${API}/api/auth/profile`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+    try {
+      const API = import.meta.env.VITE_API_URL;
 
-        setUser(profileRes.data);
-
-        const jobsRes = await axios.get(`${API}/api/jobs`);
-        setJobs(jobsRes.data);
-
-      } catch (err) {
-        if (err.response?.status === 401) {
-          localStorage.removeItem("token");
-          navigate("/login");
+      const profileRes = await axios.get(
+        `${API}/api/auth/profile`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
         }
+      );
+
+      setUser(profileRes.data);
+
+      setJobs([
+        { id: 1, title: "Frontend Developer", company: "Google" },
+        { id: 2, title: "Backend Developer", company: "Amazon" },
+        { id: 3, title: "Data Analyst", company: "TCS" }
+      ]);
+
+    } catch (err) {
+      console.log("Dashboard Error:", err.response?.data);
+
+      // Only logout if token is invalid (401)
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
       }
-    };
+    }
+  };
 
-    fetchData();
-  }, [navigate]);
+  fetchData();
+}, [navigate]);
 
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  navigate("/login");
+};
   const filteredJobs = jobs.filter(job =>
-    job.title?.toLowerCase().includes(search.toLowerCase())
+    job.title.toLowerCase().includes(search.toLowerCase())
   );
 
   if (!user) return <div className="loading">Loading...</div>;
@@ -54,20 +65,18 @@ function Dashboard() {
     <div className="dashboard">
 
       {/* SIDEBAR */}
-      <ul>
-        <li className="active">
-          <LayoutDashboard size={18} /> Dashboard
-        </li>
-        <li>
-          <Briefcase size={18} /> Skill Trials
-        </li>
-        <li>
-          <FileText size={18} /> Jobs
-        </li>
-        <li>
-          <BarChart3 size={18} /> Reports
-        </li>
-      </ul>
+      <div className="sidebar">
+        <h2>Skilitrial</h2>
+        <ul>
+          <li>Dashboard</li>
+          <li>Skill Trials</li>
+          <li>Jobs</li>
+          <li>Reports</li>
+        </ul>
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
 
       {/* MAIN */}
       <div className="main">
@@ -85,7 +94,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* CONTENT */}
+        {/* TWO COLUMN LAYOUT */}
         <div className="content">
 
           {/* LEFT PANEL */}
@@ -93,24 +102,12 @@ function Dashboard() {
             <h3>Available Jobs</h3>
 
             {filteredJobs.map(job => (
-              <div key={job._id} className="job-card">
+              <div key={job.id} className="job-card">
                 <h4>{job.title}</h4>
-                <p><strong>{job.company}</strong></p>
-                <p>{job.location}</p>
-                <p style={{ color: "#0a66c2", fontWeight: "600" }}>
-                  {job.salary}
-                </p>
-                <a
-  href={job.applyLink}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="apply-btn"
->
-  Apply
-</a>
+                <p>{job.company}</p>
+                <button>Apply</button>
               </div>
             ))}
-
           </div>
 
           {/* RIGHT PANEL */}
@@ -124,7 +121,6 @@ function Dashboard() {
         </div>
 
       </div>
-
     </div>
   );
 }
