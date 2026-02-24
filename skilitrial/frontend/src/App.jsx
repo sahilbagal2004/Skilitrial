@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BrowseTrials from "./pages/BrowseTrials";
+import PostJob from "./pages/PostJob";
 
 function App() {
   const location = useLocation();
@@ -28,6 +29,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/browse-trials" element={<BrowseTrials />} />
 
+          <Route path="/post-job" element={<PostJob />} />
+          
           <Route
             path="/dashboard"
             element={
