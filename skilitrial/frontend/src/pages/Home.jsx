@@ -5,6 +5,7 @@ import heroImage from "../assets/skilitrial-hero-optimized.jpg";
 import javaImg from "../assets/trial-java.jpg";
 import supportImg from "../assets/trial-support.jpg";
 import adminImg from "../assets/trial-admin.jpg";
+import HowItWorks from "../components/HowItWorks";
 
 function Home() {
 
@@ -67,32 +68,7 @@ function Home() {
 
         </div>
       </section>
-
-      {/* HOW IT WORKS */}
-      <section className="how-section reveal">
-        <h2>How It Works</h2>
-
-        <div className="how-container">
-          <div className="how-card">
-            <div className="icon-wrapper">📱</div>
-            <h3>Record Your Trial</h3>
-            <p>Complete a short task and upload your real skill performance.</p>
-          </div>
-
-          <div className="how-card">
-            <div className="icon-wrapper">🛡️</div>
-            <h3>Get Verified Badge</h3>
-            <p>Receive verified recognition after expert evaluation.</p>
-          </div>
-
-          <div className="how-card">
-            <div className="icon-wrapper">🤝</div>
-            <h3>Get Hired Faster</h3>
-            <p>Employers discover and hire based on proven ability.</p>
-          </div>
-        </div>
-      </section>
-
+      <HowItWorks />
       {/* FEATURED */}
       <section className="featured reveal">
         <h2>Featured Skill Trials</h2>
@@ -136,7 +112,6 @@ function Home() {
           <button className="btn-outline">Find Talent</button>
         </div>
       </section>
-
       {/* FOOTER */}
       <footer className="footer">
         <div className="footer-columns">
