@@ -12,6 +12,8 @@ function App() {
   const location = useLocation();
 
   const hideNavbar =
+    location.pathname.startsWith("/dashboard") ||
+    location.pathname.startsWith("/profile") ||
     location.pathname === "/login" ||
     location.pathname === "/register";
 

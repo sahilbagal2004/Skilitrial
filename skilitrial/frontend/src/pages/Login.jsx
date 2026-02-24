@@ -6,7 +6,6 @@ import logo from "../assets/logo.svg";
 
 function Login() {
   const navigate = useNavigate();
-
   const API = import.meta.env.VITE_API_URL;
 
   const [email, setEmail] = useState("");
@@ -18,15 +17,10 @@ function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${API}/api/auth/login`,
-        {
-          email,
-          password
-        }
-      );
-
-      console.log("Login Success:", res.data);
+      const res = await axios.post(`${API}/api/auth/login`, {
+        email,
+        password
+      });
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -34,7 +28,6 @@ function Login() {
       navigate("/dashboard");
 
     } catch (err) {
-      console.log("Login Error:", err.response?.data);
       alert(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -45,7 +38,10 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
 
-        <img src={logo} alt="Skilitrial Logo" className="login-logo" />
+        {/* 🔥 LOGO CLICKABLE */}
+        <Link to="/" className="logo-link">
+          <img src={logo} alt="Skilitrial Logo" className="login-logo" />
+        </Link>
 
         <h2>Sign in to your account</h2>
 

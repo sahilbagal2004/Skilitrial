@@ -10,51 +10,50 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  const fetchData = async () => {
-    const token = localStorage.getItem("token");
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
 
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const API = import.meta.env.VITE_API_URL;
-
-      const profileRes = await axios.get(
-        `${API}/api/auth/profile`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-
-      setUser(profileRes.data);
-
-      setJobs([
-        { id: 1, title: "Frontend Developer", company: "Google" },
-        { id: 2, title: "Backend Developer", company: "Amazon" },
-        { id: 3, title: "Data Analyst", company: "TCS" }
-      ]);
-
-    } catch (err) {
-      console.log("Dashboard Error:", err.response?.data);
-
-      // Only logout if token is invalid (401)
-      if (err.response?.status === 401) {
-        localStorage.removeItem("token");
+      if (!token) {
         navigate("/login");
+        return;
       }
-    }
+
+      try {
+        const API = import.meta.env.VITE_API_URL;
+
+        const profileRes = await axios.get(
+          `${API}/api/auth/profile`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+
+        setUser(profileRes.data);
+
+        // Temporary jobs (connect backend later)
+        setJobs([
+          { id: 1, title: "Frontend Developer", company: "Google", type: "Remote" },
+          { id: 2, title: "Backend Developer", company: "Amazon", type: "Hybrid" },
+          { id: 3, title: "Data Analyst", company: "TCS", type: "Onsite" }
+        ]);
+
+      } catch (err) {
+        if (err.response?.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
-  fetchData();
-}, [navigate]);
-
-const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  navigate("/login");
-};
   const filteredJobs = jobs.filter(job =>
     job.title.toLowerCase().includes(search.toLowerCase())
   );
@@ -64,37 +63,64 @@ const handleLogout = () => {
   return (
     <div className="dashboard">
 
-      {/* SIDEBAR */}
-      <div className="sidebar">
-        <h2>Skilitrial</h2>
-        <ul>
-          <li>Dashboard</li>
-          <li>Skill Trials</li>
-          <li>Jobs</li>
-          <li>Reports</li>
-        </ul>
+      {/* ================= SIDEBAR ================= */}
+      <aside className="sidebar">
+        <div>
+          <h2 className="logo">Skilitrial</h2>
+
+          <ul>
+            <li className="active">Dashboard</li>
+            <li>Skill Trials</li>
+            <li>Jobs</li>
+            <li>Reports</li>
+          </ul>
+        </div>
+
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
-      </div>
+      </aside>
 
-      {/* MAIN */}
-      <div className="main">
+      {/* ================= MAIN ================= */}
+      <main className="main">
 
-        {/* TOPBAR */}
+        {/* ===== TOPBAR ===== */}
         <div className="topbar">
           <input
             type="text"
-            placeholder="Search jobs..."
+            placeholder="🔍 Search jobs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
           />
+
           <div className="user-info">
-            👤 {user.name}
+            <div className="avatar">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <span>Welcome, <strong>{user.name}</strong></span>
           </div>
         </div>
 
-        {/* TWO COLUMN LAYOUT */}
+        {/* ===== STATS ===== */}
+        <div className="stats">
+          <div className="stat-card">
+            <span>Total Jobs</span>
+            <h2>{jobs.length}</h2>
+          </div>
+
+          <div className="stat-card">
+            <span>Applied Jobs</span>
+            <h2>0</h2>
+          </div>
+
+          <div className="stat-card">
+            <span>Status</span>
+            <h2 className="status-active">Active</h2>
+          </div>
+        </div>
+
+        {/* ===== CONTENT ===== */}
         <div className="content">
 
           {/* LEFT PANEL */}
@@ -103,9 +129,15 @@ const handleLogout = () => {
 
             {filteredJobs.map(job => (
               <div key={job.id} className="job-card">
-                <h4>{job.title}</h4>
-                <p>{job.company}</p>
-                <button>Apply</button>
+                <div className="job-info">
+                  <h4>{job.title}</h4>
+                  <p>{job.company}</p>
+                  <span className="job-type">{job.type}</span>
+                </div>
+
+                <button className="apply-btn">
+                  Apply Now
+                </button>
               </div>
             ))}
           </div>
@@ -113,14 +145,22 @@ const handleLogout = () => {
           {/* RIGHT PANEL */}
           <div className="right-panel">
             <h3>Your Profile</h3>
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Role:</strong> {user.role}</p>
+
+            <div className="profile-box">
+              <div className="profile-avatar">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+
+              <div className="profile-details">
+                <p><strong>Name:</strong> {user.name}</p>
+                <p><strong>Email:</strong> {user.email}</p>
+                <p><strong>Role:</strong> {user.role}</p>
+              </div>
+            </div>
           </div>
 
         </div>
-
-      </div>
+      </main>
     </div>
   );
 }
