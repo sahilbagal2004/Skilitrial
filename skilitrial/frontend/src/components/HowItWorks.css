@@ -78,6 +78,9 @@
   color: #64748b;
   line-height: 1.6;
 }
+#how-it-works {
+  scroll-margin-top: 100px;
+}
 
 @media (max-width: 900px) {
   .how-container {

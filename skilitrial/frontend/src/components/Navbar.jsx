@@ -54,15 +54,15 @@ function Navbar() {
           Browse Trials
         </NavLink>
 
-        <NavLink to="/how-it-works" onClick={() => setMenuOpen(false)}>
+        {/* ✅ SCROLL LINK INSTEAD OF ROUTE */}
+        <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
           How It Works
-        </NavLink>
+        </a>
 
         <NavLink to="/post-job" onClick={() => setMenuOpen(false)}>
           Post a Job
         </NavLink>
 
-        {/* ✅ Added Login + Get Started */}
         <div className="auth-buttons">
           <NavLink
             to="/login"
