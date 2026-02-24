@@ -1,90 +1,122 @@
 import "./HowItWorks.css";
 import { motion } from "framer-motion";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import axios from "axios";
 
 function HowItWorks() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const [preview, setPreview] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   const handleFileClick = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      console.log("Selected file:", file);
-      alert(`Selected file: ${file.name}`);
-      // Later we can upload this to backend
+    if (!file) return;
+
+    const previewURL = URL.createObjectURL(file);
+    setPreview(previewURL);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/upload",
+        formData,
+        {
+          onUploadProgress: (event) => {
+            const percent = Math.round(
+              (event.loaded * 100) / event.total
+            );
+            setProgress(percent);
+          },
+        }
+      );
+
+      alert("Uploaded successfully!");
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed");
     }
   };
-
   return (
-    <section id="how-it-works" className="how-section">
-      <motion.h2
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="how-title"
+  <section id="how-it-works" className="how-section">
+    <h2 className="how-title">How It Works</h2>
+
+    <div className="how-container">
+
+      {/* 1️⃣ Upload Card */}
+      <motion.div
+        className="how-card"
+        whileHover={{ y: -10 }}
+        onClick={handleFileClick}
       >
-        How It Works
-      </motion.h2>
+        <div className="icon-circle">📱</div>
+        <h3>Record Your Trial</h3>
+        <p>Upload your real skill performance.</p>
 
-      <div className="how-container">
-        {/* 🔥 FIRST CARD - OPEN FILE PICKER */}
-        <motion.div
-          className="how-card"
-          whileHover={{ y: -10 }}
-          onClick={handleFileClick}
-        >
-          <div className="icon-circle">📱</div>
-          <h3>Record Your Trial</h3>
-          <p>
-            Complete a short task and upload your real skill performance.
-          </p>
-          <span className="hover-arrow">→</span>
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          accept="video/*,audio/*"
+          onChange={handleFileChange}
+        />
 
-          {/* Hidden File Input */}
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            accept="video/*,audio/*,.pdf,.doc,.docx"
-            onChange={handleFileChange}
+        {preview && (
+          <video
+            src={preview}
+            controls
+            width="100%"
+            style={{ marginTop: "15px", borderRadius: "10px" }}
           />
-        </motion.div>
+        )}
 
-        {/* SECOND CARD */}
-        <motion.div
-          className="how-card"
-          whileHover={{ y: -10 }}
-          onClick={() => navigate("/dashboard")}
-        >
-          <div className="icon-circle">🛡️</div>
-          <h3>Get Verified Badge</h3>
-          <p>
-            Receive verified recognition after expert evaluation.
-          </p>
-          <span className="hover-arrow">→</span>
-        </motion.div>
+        {progress > 0 && (
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        )}
 
-        {/* THIRD CARD */}
-        <motion.div
-          className="how-card"
-          whileHover={{ y: -10 }}
-          onClick={() => navigate("/register")}
-        >
-          <div className="icon-circle">🤝</div>
-          <h3>Get Hired Faster</h3>
-          <p>
-            Employers discover and hire based on proven ability.
-          </p>
-          <span className="hover-arrow">→</span>
-        </motion.div>
-      </div>
-    </section>
-  );
+        <span className="hover-arrow">→</span>
+      </motion.div>
+
+      {/* 2️⃣ Verified Badge */}
+      <motion.div
+        className="how-card"
+        whileHover={{ y: -10 }}
+        onClick={() => navigate("/dashboard")}
+      >
+        <div className="icon-circle">🛡️</div>
+        <h3>Get Verified Badge</h3>
+        <p>Receive verified recognition after expert evaluation.</p>
+        <span className="hover-arrow">→</span>
+      </motion.div>
+
+      {/* 3️⃣ Get Hired Faster */}
+      <motion.div
+        className="how-card"
+        whileHover={{ y: -10 }}
+        onClick={() => navigate("/register")}
+      >
+        <div className="icon-circle">🤝</div>
+        <h3>Get Hired Faster</h3>
+        <p>Employers discover and hire based on proven ability.</p>
+        <span className="hover-arrow">→</span>
+      </motion.div>
+
+    </div>
+  </section>
+);
 }
 
 export default HowItWorks;

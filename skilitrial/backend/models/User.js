@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const experienceSchema = new mongoose.Schema({
   title: String,
@@ -7,73 +7,74 @@ const experienceSchema = new mongoose.Schema({
   from: Date,
   to: Date,
   current: Boolean,
-  description: String
+  description: String,
 });
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
 
     email: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
 
     password: {
       type: String,
-      required: true
+      required: true,
     },
 
     role: {
       type: String,
       enum: ["candidate", "recruiter", "admin"],
-      default: "candidate"
+      default: "candidate",
     },
 
     headline: {
       type: String,
-      default: ""
+      default: "",
     },
 
     bio: {
       type: String,
-      default: ""
+      default: "",
     },
 
     location: {
       type: String,
-      default: ""
+      default: "",
     },
 
     company: {
       type: String,
-      default: ""
+      default: "",
     },
 
     website: {
       type: String,
-      default: ""
+      default: "",
     },
 
     profileImage: {
       type: String,
-      default: ""
+      default: "",
     },
 
     skills: [
       {
-        type: String
-      }
+        type: String,
+      },
     ],
 
-    experience: [experienceSchema]
-
+    experience: [experienceSchema],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+
+export default User;
