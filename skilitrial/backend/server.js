@@ -9,39 +9,49 @@ import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
-console.log("Mongo URI:", process.env.MONGO_URI);
-
 const app = express();
 
-const corsOptions = {
-  origin: true,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-};
+/* ================= MIDDLEWARE ================= */
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: process.env.CLIENT_URL || true,
+  credentials: true
+}));
+
 app.use(express.json());
 
+/* ================= ROUTES ================= */
+
+app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/upload", uploadRoute);
-app.use("/api/auth", authRoutes);
+
+/* ================= ROOT ================= */
+
+app.get("/", (req, res) => {
+  res.send("Skilitrial API Running 🚀");
+});
+
+/* ================= DB CONNECT ================= */
 
 mongoose
   .connect(process.env.MONGO_URI, {
     dbName: "skilitrial_v2"
   })
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .then(() => console.log("MongoDB Connected ✅"))
+  .catch((err) => console.error("Mongo Error:", err));
 
-app.get("/", (req, res) => {
-  res.send("API Running");
+/* ================= GLOBAL ERROR HANDLER ================= */
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Something went wrong" });
 });
 
-app.get("/test", (req, res) => {
-  res.send("Backend test working");
-});
+/* ================= SERVER ================= */
 
-app.listen(process.env.PORT || 5000, "0.0.0.0", () =>
-  console.log("Server running on port 5000")
-);
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

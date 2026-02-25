@@ -9,6 +9,9 @@ function Dashboard() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_URL;
+
+  // ================= FETCH PROFILE + JOBS =================
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
@@ -19,51 +22,49 @@ function Dashboard() {
       }
 
       try {
-        const API = import.meta.env.VITE_API_URL;
-
-        const profileRes = await axios.get(
-          `${API}/api/auth/profile`,
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
+        const profileRes = await axios.get(`${API}/api/auth/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setUser(profileRes.data);
 
-        // Temporary jobs (connect backend later)
-        setJobs([
-          { id: 1, title: "Frontend Developer", company: "Google", type: "Remote" },
-          { id: 2, title: "Backend Developer", company: "Amazon", type: "Hybrid" },
-          { id: 3, title: "Data Analyst", company: "TCS", type: "Onsite" }
-        ]);
+        // Fetch jobs from backend (if available)
+        const jobsRes = await axios.get(`${API}/api/jobs`);
+        setJobs(jobsRes.data);
 
       } catch (err) {
-        if (err.response?.status === 401) {
-          localStorage.removeItem("token");
-          navigate("/login");
-        }
+        localStorage.removeItem("token");
+        navigate("/login");
       }
     };
 
     fetchData();
-  }, [navigate]);
+  }, [navigate, API]);
 
+  // ================= LOGOUT =================
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    setUser(null);
+    navigate("/");
+  };
+
+  // ================= APPLY =================
+  const handleApply = (jobId) => {
+    alert(`Applied for Job ID: ${jobId}`);
+    // Later connect backend: POST /api/apply
   };
 
   const filteredJobs = jobs.filter(job =>
     job.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (!user) return <div className="loading">Loading...</div>;
+  if (!user) return null;
 
   return (
     <div className="dashboard">
 
-      {/* ================= SIDEBAR ================= */}
+      {/* SIDEBAR */}
       <aside className="sidebar">
         <div>
           <h2 className="logo">Skilitrial</h2>
@@ -81,14 +82,14 @@ function Dashboard() {
         </button>
       </aside>
 
-      {/* ================= MAIN ================= */}
+      {/* MAIN */}
       <main className="main">
 
-        {/* ===== TOPBAR ===== */}
+        {/* TOPBAR */}
         <div className="topbar">
           <input
             type="text"
-            placeholder="🔍 Search jobs..."
+            placeholder="Search jobs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="search-input"
@@ -102,7 +103,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* ===== STATS ===== */}
+        {/* STATS */}
         <div className="stats">
           <div className="stat-card">
             <span>Total Jobs</span>
@@ -120,29 +121,32 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* ===== CONTENT ===== */}
+        {/* CONTENT */}
         <div className="content">
 
-          {/* LEFT PANEL */}
+          {/* JOB LIST */}
           <div className="left-panel">
             <h3>Available Jobs</h3>
 
             {filteredJobs.map(job => (
-              <div key={job.id} className="job-card">
+              <div key={job._id} className="job-card">
                 <div className="job-info">
                   <h4>{job.title}</h4>
                   <p>{job.company}</p>
                   <span className="job-type">{job.type}</span>
                 </div>
 
-                <button className="apply-btn">
+                <button
+                  className="apply-btn"
+                  onClick={() => handleApply(job._id)}
+                >
                   Apply Now
                 </button>
               </div>
             ))}
           </div>
 
-          {/* RIGHT PANEL */}
+          {/* PROFILE */}
           <div className="right-panel">
             <h3>Your Profile</h3>
 

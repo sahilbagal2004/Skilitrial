@@ -5,49 +5,47 @@ import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "candidate"
+    role: "candidate",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleRegister = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const API = import.meta.env.VITE_API_URL;
+    try {
+      const res = await axios.post(
+        `${API}/api/auth/register`,
+        formData
+      );
 
-    const res = await axios.post(
-      `${API}/api/auth/register`,
-      formData
-    );
+      alert(res.data.message || "Registered Successfully");
 
-    alert(res.data.message || "Registered Successfully");
+      // Optional: auto redirect based on role
+      navigate("/login");
 
-    navigate("/login");
-
-  } catch (err) {
-    console.log(err.response?.data);
-    setError(err.response?.data?.message || "Registration Failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration Failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="register-container">
@@ -55,9 +53,11 @@ function Register() {
         <h2>Create Your Account</h2>
 
         <form onSubmit={handleRegister}>
+
           <input
             name="name"
             placeholder="Full Name"
+            value={formData.name}
             onChange={handleChange}
             required
           />
@@ -66,6 +66,7 @@ function Register() {
             name="email"
             type="email"
             placeholder="Email Address"
+            value={formData.email}
             onChange={handleChange}
             required
           />
@@ -74,14 +75,35 @@ function Register() {
             name="password"
             type="password"
             placeholder="Password"
+            value={formData.password}
             onChange={handleChange}
             required
           />
 
-          <select name="role" onChange={handleChange}>
-            <option value="candidate">Candidate</option>
-            <option value="recruiter">Recruiter</option>
-          </select>
+          {/* 🔥 Role Selection */}
+          <div className="role-select">
+            <label>
+              <input
+                type="radio"
+                name="role"
+                value="candidate"
+                checked={formData.role === "candidate"}
+                onChange={handleChange}
+              />
+              Candidate
+            </label>
+
+            <label>
+              <input
+                type="radio"
+                name="role"
+                value="recruiter"
+                checked={formData.role === "recruiter"}
+                onChange={handleChange}
+              />
+              Recruiter
+            </label>
+          </div>
 
           {error && <p className="error-text">{error}</p>}
 

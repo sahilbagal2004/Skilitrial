@@ -6,17 +6,27 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     company: {
       type: String,
       required: true,
     },
+
     location: String,
     salary: String,
-    applyLink: String,
+    description: String,
+    type: {
+      type: String,
+      enum: ["Remote", "Hybrid", "Onsite"],
+    },
+
+    recruiter: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-const Job = mongoose.model("Job", jobSchema);
-
-export default Job;
+export default mongoose.model("Job", jobSchema);

@@ -25,7 +25,12 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/dashboard");
+      // 🔥 Role-based redirect
+      if (res.data.user.role === "recruiter") {
+        navigate("/recruiter-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
 
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
@@ -38,7 +43,6 @@ function Login() {
     <div className="login-container">
       <div className="login-card">
 
-        {/* 🔥 LOGO CLICKABLE */}
         <Link to="/" className="logo-link">
           <img src={logo} alt="Skilitrial Logo" className="login-logo" />
         </Link>
