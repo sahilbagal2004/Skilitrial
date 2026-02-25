@@ -1,6 +1,6 @@
 import "./Navbar.css";
 import logo from "../assets/logo.svg";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
@@ -9,19 +9,6 @@ function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  const navigate = useNavigate();
-
-  // ✅ Check if user is logged in
-  const isLoggedIn = localStorage.getItem("token");
-
-  // ✅ Logout function
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setMenuOpen(false);
-    navigate("/"); // Redirect to Home page
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,6 +54,7 @@ function Navbar() {
           Browse Trials
         </NavLink>
 
+        {/* ✅ SCROLL LINK INSTEAD OF ROUTE */}
         <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
           How It Works
         </a>
@@ -76,29 +64,21 @@ function Navbar() {
         </NavLink>
 
         <div className="auth-buttons">
-          {!isLoggedIn ? (
-            <>
-              <NavLink
-                to="/login"
-                className="btn-login"
-                onClick={() => setMenuOpen(false)}
-              >
-                Log In
-              </NavLink>
+          <NavLink
+            to="/login"
+            className="btn-login"
+            onClick={() => setMenuOpen(false)}
+          >
+            Log In
+          </NavLink>
 
-              <NavLink
-                to="/register"
-                className="btn-start"
-                onClick={() => setMenuOpen(false)}
-              >
-                Get Started
-              </NavLink>
-            </>
-          ) : (
-            <button className="btn-logout" onClick={handleLogout}>
-              Logout
-            </button>
-          )}
+          <NavLink
+            to="/register"
+            className="btn-start"
+            onClick={() => setMenuOpen(false)}
+          >
+            Get Started
+          </NavLink>
         </div>
       </div>
     </motion.nav>
