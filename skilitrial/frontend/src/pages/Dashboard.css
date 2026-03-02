@@ -258,6 +258,23 @@
   font-size: 14px;
   color: #374151;
 }
+.job-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.external-link {
+  font-size: 13px;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.external-link:hover {
+  text-decoration: underline;
+}
 
 /* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 900px) {
