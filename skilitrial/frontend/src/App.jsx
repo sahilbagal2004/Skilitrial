@@ -12,6 +12,7 @@ import PostJob from "./pages/PostJob";
 import Jobs from "./pages/Jobs";
 import Reports from "./pages/Reports";
 import SkillTrials from "./pages/SkillTrials";
+import CustomerSupportTrialStart from "./pages/CustomerSupportTrialStart";
 
 // ✅ Trial Pages
 import CustomerSupportTrial from "./pages/CustomerSupportTrial";
@@ -93,6 +94,10 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/trial/customer-support/start"
+  element={<CustomerSupportTrialStart />}
+/>
 
         {/* ===== Recruiter Protected Route ===== */}
         <Route

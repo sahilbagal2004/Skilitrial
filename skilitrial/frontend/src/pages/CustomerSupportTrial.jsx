@@ -1,7 +1,10 @@
 import "./CustomerSupportTrial.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function CustomerSupportTrial() {
+
+  const navigate = useNavigate();
+
   return (
     <div className="trial-page">
 
@@ -26,11 +29,19 @@ function CustomerSupportTrial() {
         </div>
 
         <div className="trial-actions">
-          <button className="start-btn">Start Trial</button>
+
+          {/* ✅ Start Trial Button Now Clickable */}
+          <button
+            className="start-btn"
+            onClick={() => navigate("/trial/customer-support/start")}
+          >
+            Start Trial
+          </button>
 
           <Link to="/" className="back-btn">
             Go Back
           </Link>
+
         </div>
 
       </div>
