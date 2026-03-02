@@ -9,67 +9,112 @@ import RecruiterDashboard from "./pages/RecruiterDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BrowseTrials from "./pages/BrowseTrials";
 import PostJob from "./pages/PostJob";
+import Jobs from "./pages/Jobs";
+import Reports from "./pages/Reports";
+import SkillTrials from "./pages/SkillTrials";
+
+// ✅ Trial Pages
+import CustomerSupportTrial from "./pages/CustomerSupportTrial";
+import JavaLoginTrial from "./pages/JavaLoginTrial";
+import JavaLoginStart from "./pages/JavaLoginStart";   // ✅ ADDED
+import OfficeAdminTrial from "./pages/OfficeAdminTrial";
 
 function App() {
   const location = useLocation();
 
-  // Pages where navbar should NOT show
-  const noNavbarRoutes = [
+  // Hide Navbar on these pages
+  const hideNavbarRoutes = [
     "/login",
     "/register",
     "/dashboard",
     "/recruiter-dashboard",
-    "/profile",
+    "/jobs",
+    "/reports",
+    "/skill-trials",
+    "/profile"
   ];
 
-  const hideNavbar = noNavbarRoutes.some((route) =>
+  const shouldHideNavbar = hideNavbarRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
 
   return (
     <div className="app-wrapper">
-      {!hideNavbar && <Navbar />}
+      {!shouldHideNavbar && <Navbar />}
 
-      <main className="main-content">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/browse-trials" element={<BrowseTrials />} />
-          <Route path="/post-job" element={<PostJob />} />
+      <Routes>
 
-          {/* Candidate Dashboard */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute role="candidate">
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
+        {/* ===== Public Routes ===== */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/browse-trials" element={<BrowseTrials />} />
+        <Route path="/post-job" element={<PostJob />} />
 
-          {/* Recruiter Dashboard */}
-          <Route
-            path="/recruiter-dashboard"
-            element={
-              <ProtectedRoute role="recruiter">
-                <RecruiterDashboard />
-              </ProtectedRoute>
-            }
-          />
+        {/* ===== Trial Pages ===== */}
+        <Route path="/customer-support-trial" element={<CustomerSupportTrial />} />
+        <Route path="/java-login-trial" element={<JavaLoginTrial />} />
+        <Route path="/java-login-trial/start" element={<JavaLoginStart />} />   {/* ✅ ADDED */}
+        <Route path="/office-admin-trial" element={<OfficeAdminTrial />} />
 
-          {/* Profile (Logged in users only) */}
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </main>
+        {/* ===== Candidate Protected Routes ===== */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute role="candidate">
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/jobs"
+          element={
+            <ProtectedRoute role="candidate">
+              <Jobs />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute role="candidate">
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/skill-trials"
+          element={
+            <ProtectedRoute role="candidate">
+              <SkillTrials />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ===== Recruiter Protected Route ===== */}
+        <Route
+          path="/recruiter-dashboard"
+          element={
+            <ProtectedRoute role="recruiter">
+              <RecruiterDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ===== Profile ===== */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+      </Routes>
     </div>
   );
 }

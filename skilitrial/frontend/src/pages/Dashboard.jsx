@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Dashboard.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [search, setSearch] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [appliedJobs, setAppliedJobs] = useState([]);
 
+  const navigate = useNavigate();
+  const location = useLocation();
   const API = import.meta.env.VITE_API_URL;
 
-  // ================= FETCH PROFILE + JOBS =================
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
@@ -22,44 +24,75 @@ function Dashboard() {
       }
 
       try {
+        // PROFILE
         const profileRes = await axios.get(`${API}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
         setUser(profileRes.data);
 
-        // Fetch jobs from backend (if available)
+        // JOBS
         const jobsRes = await axios.get(`${API}/api/jobs`);
         setJobs(jobsRes.data);
 
+        // FETCH APPLIED JOBS
+        const appRes = await axios.get(
+          `${API}/api/applications/my-applications`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        const appliedIds = appRes.data.map((app) => app.job);
+        setAppliedJobs(appliedIds);
+
       } catch (err) {
+        console.log(err);
         localStorage.removeItem("token");
         navigate("/login");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [navigate, API]);
 
-  // ================= LOGOUT =================
+  // APPLY FUNCTION
+  const handleApply = async (jobId) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      await axios.post(
+        `${API}/api/applications/apply`,  // ✅ CORRECT ROUTE
+        { jobId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setAppliedJobs((prev) => [...prev, jobId]);
+
+    } catch (err) {
+      alert("Already Applied");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
     navigate("/");
   };
 
-  // ================= APPLY =================
-  const handleApply = (jobId) => {
-    alert(`Applied for Job ID: ${jobId}`);
-    // Later connect backend: POST /api/apply
-  };
-
-  const filteredJobs = jobs.filter(job =>
+  const filteredJobs = jobs.filter((job) =>
     job.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (!user) return null;
+  if (loading) {
+    return (
+      <div style={{ padding: "100px", textAlign: "center" }}>
+        <h2>Loading Dashboard...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">
@@ -70,7 +103,9 @@ function Dashboard() {
           <h2 className="logo">Skilitrial</h2>
 
           <ul>
-            <li className="active">Dashboard</li>
+            <li className={location.pathname === "/dashboard" ? "active" : ""}>
+              Dashboard
+            </li>
             <li>Skill Trials</li>
             <li>Jobs</li>
             <li>Reports</li>
@@ -97,9 +132,11 @@ function Dashboard() {
 
           <div className="user-info">
             <div className="avatar">
-              {user.name.charAt(0).toUpperCase()}
+              {user?.name?.charAt(0).toUpperCase()}
             </div>
-            <span>Welcome, <strong>{user.name}</strong></span>
+            <span>
+              Welcome, <strong>{user?.name}</strong>
+            </span>
           </div>
         </div>
 
@@ -112,7 +149,7 @@ function Dashboard() {
 
           <div className="stat-card">
             <span>Applied Jobs</span>
-            <h2>0</h2>
+            <h2>{appliedJobs.length}</h2>
           </div>
 
           <div className="stat-card">
@@ -124,11 +161,10 @@ function Dashboard() {
         {/* CONTENT */}
         <div className="content">
 
-          {/* JOB LIST */}
           <div className="left-panel">
             <h3>Available Jobs</h3>
 
-            {filteredJobs.map(job => (
+            {filteredJobs.map((job) => (
               <div key={job._id} className="job-card">
                 <div className="job-info">
                   <h4>{job.title}</h4>
@@ -137,29 +173,31 @@ function Dashboard() {
                 </div>
 
                 <button
-                  className="apply-btn"
+                  className={`apply-btn ${
+                    appliedJobs.includes(job._id) ? "applied" : ""
+                  }`}
                   onClick={() => handleApply(job._id)}
+                  disabled={appliedJobs.includes(job._id)}
                 >
-                  Apply Now
+                  {appliedJobs.includes(job._id)
+                    ? "Applied"
+                    : "Apply Now"}
                 </button>
               </div>
             ))}
           </div>
 
-          {/* PROFILE */}
           <div className="right-panel">
             <h3>Your Profile</h3>
 
             <div className="profile-box">
               <div className="profile-avatar">
-                {user.name.charAt(0).toUpperCase()}
+                {user?.name?.charAt(0).toUpperCase()}
               </div>
 
-              <div className="profile-details">
-                <p><strong>Name:</strong> {user.name}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Role:</strong> {user.role}</p>
-              </div>
+              <p><strong>Name:</strong> {user?.name}</p>
+              <p><strong>Email:</strong> {user?.email}</p>
+              <p><strong>Role:</strong> {user?.role}</p>
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 import "./Home.css";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";   // ✅ ADD THIS
+import { Link } from "react-router-dom";
 import heroImage from "../assets/skilitrial-hero-optimized.jpg";
 import javaImg from "../assets/trial-java.jpg";
 import supportImg from "../assets/trial-support.jpg";
@@ -25,6 +25,8 @@ function Home() {
     );
 
     revealElements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -33,7 +35,6 @@ function Home() {
       <section className="hero">
         <div className="hero-content">
 
-          {/* LEFT SIDE */}
           <div className="hero-left">
             <h1>
               Show Your Skills. <br /> Get Hired.
@@ -44,8 +45,13 @@ function Home() {
             </p>
 
             <div className="hero-buttons">
-              <button className="btn-primary">Join as Job Seeker</button>
-              <button className="btn-outline">Find Talent</button>
+              <Link to="/register" className="btn-primary">
+                Join as Job Seeker
+              </Link>
+
+              <Link to="/post-job" className="btn-outline">
+                Find Talent
+              </Link>
             </div>
 
             <div className="hero-features">
@@ -55,7 +61,6 @@ function Home() {
             </div>
           </div>
 
-          {/* RIGHT SIDE - IMAGE ONLY */}
           <div className="hero-right">
             <div className="single-card">
               <img
@@ -68,37 +73,45 @@ function Home() {
 
         </div>
       </section>
+
+      {/* HOW IT WORKS */}
       <HowItWorks />
-      {/* FEATURED */}
+
+      {/* FEATURED SKILL TRIALS */}
       <section className="featured reveal">
         <h2>Featured Skill Trials</h2>
 
         <div className="cards">
 
-          <div className="card">
+          {/* Java Login */}
+          <Link to="/java-login-trial" className="card">
             <img src={javaImg} alt="Java Login System" />
             <h3>Java Login System</h3>
             <p>Build a complete authentication flow in Android Studio.</p>
-          </div>
+          </Link>
 
-          <div className="card">
-            <img src={supportImg} alt="Customer Support Call" />
+          {/* Customer Support */}
+          <Link to="/customer-support-trial" className="card">
+            <img src={supportImg} alt="Customer Support Trial" />
             <h3>Customer Support Trial</h3>
             <p>Demonstrate communication & problem-solving skills.</p>
-          </div>
+          </Link>
 
-          <div className="card">
+          {/* Office Admin */}
+          <Link to="/office-admin-trial" className="card">
             <img src={adminImg} alt="Office Admin Task" />
             <h3>Office Admin Task</h3>
             <p>Show Excel, organization & workflow efficiency.</p>
-          </div>
+          </Link>
 
         </div>
 
-        <button className="browse-btn">Browse More Trials</button>
+        <Link to="/browse-trials" className="browse-btn">
+          Browse More Trials
+        </Link>
       </section>
 
-      {/* CTA */}
+      {/* CTA SECTION */}
       <section className="cta reveal">
         <h2>Ready to Prove Your Skills?</h2>
         <p>
@@ -107,11 +120,15 @@ function Home() {
 
         <div className="cta-buttons">
           <Link to="/register" className="btn-primary">
-  Join Now for Free
-</Link>
-          <button className="btn-outline">Find Talent</button>
+            Join Now for Free
+          </Link>
+
+          <Link to="/post-job" className="btn-outline">
+            Find Talent
+          </Link>
         </div>
       </section>
+
       {/* FOOTER */}
       <footer className="footer">
         <div className="footer-columns">

@@ -1,0 +1,58 @@
+.office-trial-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef4ff, #dbeafe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.office-trial-container {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  max-width: 750px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.trial-description {
+  margin-bottom: 30px;
+  color: #4b5563;
+}
+
+.trial-box {
+  background: #f8fbff;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.trial-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.back-btn {
+  padding: 12px 28px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}

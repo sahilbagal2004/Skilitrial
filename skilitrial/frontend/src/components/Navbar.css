@@ -1,4 +1,4 @@
-/* BASE NAVBAR */
+/* ================= BASE NAVBAR ================= */
 .navbar {
   position: fixed;
   top: 0;
@@ -23,7 +23,7 @@
   border-bottom: 1px solid rgba(255, 122, 0, 0.2);
 }
 
-/* SUBTLE GLOW LINE */
+/* Glow Line */
 .navbar::after {
   content: "";
   position: absolute;
@@ -40,12 +40,12 @@
   opacity: 1;
 }
 
-/* LOGO */
+/* ================= LOGO ================= */
 .logo img {
   height: 40px;
 }
 
-/* NAV LINKS */
+/* ================= NAV LINKS ================= */
 .nav-links {
   display: flex;
   align-items: center;
@@ -60,7 +60,7 @@
   transition: 0.3s ease;
 }
 
-/* ACTIVE LINK */
+/* Active link */
 .nav-links a.active {
   color: #ff7a00;
   font-weight: 600;
@@ -83,17 +83,22 @@
   width: 100%;
 }
 
-/* ============================= */
-/* AUTH BUTTONS (NEW ADDED) */
-/* ============================= */
-
+/* ================= AUTH BUTTONS ================= */
 .auth-buttons {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* LOGIN BUTTON */
+/* Remove default button styles */
+.auth-buttons button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* LOGIN STYLE BUTTON */
 .btn-login {
   padding: 8px 18px;
   border-radius: 20px;
@@ -108,7 +113,7 @@
   color: white !important;
 }
 
-/* GET STARTED BUTTON */
+/* PRIMARY BUTTON */
 .btn-start {
   background: linear-gradient(135deg, #ff7a00, #ff9f43);
   padding: 10px 22px;
@@ -122,7 +127,7 @@
   transform: translateY(-2px);
 }
 
-/* HAMBURGER */
+/* ================= HAMBURGER ================= */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -137,7 +142,6 @@
   transition: 0.3s ease;
 }
 
-/* HAMBURGER TO X */
 .hamburger.open span:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
 }
@@ -150,8 +154,9 @@
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* MOBILE */
+/* ================= MOBILE ================= */
 @media (max-width: 900px) {
+
   .hamburger {
     display: flex;
   }
@@ -174,7 +179,6 @@
     right: 20px;
   }
 
-  /* Stack buttons on mobile */
   .auth-buttons {
     flex-direction: column;
     width: 100%;

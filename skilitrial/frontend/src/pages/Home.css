@@ -56,16 +56,14 @@ section {
   color: white;
   padding: 14px 34px;
   border-radius: 8px;
-  border: none;
   font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+  text-decoration: none;
+  display: inline-block;
   transition: 0.3s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
 }
 
 .btn-outline {
@@ -75,7 +73,8 @@ section {
   border-radius: 8px;
   border: 1px solid #c7d2fe;
   font-weight: 600;
-  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
   transition: 0.3s ease;
 }
 
@@ -99,12 +98,6 @@ section {
   text-align: center;
 }
 
-.how-section h2 {
-  font-size: 36px;
-  margin-bottom: 60px;
-  color: #111827;
-}
-
 .how-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -113,32 +106,6 @@ section {
   margin: auto;
 }
 
-.how-card {
-  background: #f9fbff;
-  padding: 45px 35px;
-  border-radius: 16px;
-  box-shadow: 0 20px 45px rgba(0,0,0,0.05);
-  transition: 0.3s ease;
-}
-
-.how-card:hover {
-  transform: translateY(-8px);
-}
-
-.icon-wrapper {
-  width: 65px;
-  height: 65px;
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 25px;
-  font-size: 24px;
-}
-
-/* ================= FEATURED ================= */
 /* ================= FEATURED ================= */
 
 .featured {
@@ -155,70 +122,78 @@ section {
 }
 
 /* Cards Grid */
+
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
-  max-width: 1100px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+  max-width: 1200px;
   margin: 0 auto;
+  align-items: stretch;
 }
 
-/* Individual Card */
+/* Card (Now clickable Link) */
+
 .card {
   background: white;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(37, 99, 235, 0.08);
-  transition: all 0.35s ease;
-  text-align: left;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  transition: 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  /* 🔥 Important for Link */
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 .card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 30px 70px rgba(37, 99, 235, 0.18);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
 }
 
-/* Image */
 .card img {
   width: 100%;
-  height: 220px;
+  height: 230px;
   object-fit: cover;
 }
 
-/* Card Content */
 .card h3 {
-  margin: 24px 24px 10px;
+  margin: 20px 20px 10px;
   font-size: 20px;
   font-weight: 600;
-  color: #1f2937;
 }
 
 .card p {
-  margin: 0 24px 24px;
-  font-size: 15px;
+  margin: 0 20px 25px;
+  font-size: 14px;
   color: #6b7280;
-  line-height: 1.5;
+  line-height: 1.6;
+  flex-grow: 1;
 }
 
 /* Browse Button */
+
 .browse-btn {
+  display: inline-block;
   margin-top: 60px;
   padding: 14px 34px;
   font-size: 15px;
   font-weight: 600;
   border-radius: 30px;
-  border: none;
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+  text-decoration: none;
+  transition: 0.3s ease;
 }
 
 .browse-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
 }
+
 /* ================= CTA ================= */
 
 .cta {
@@ -267,7 +242,7 @@ section {
 
 /* ================= RESPONSIVE ================= */
 
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
 
   .hero-content {
     grid-template-columns: 1fr;
@@ -275,41 +250,20 @@ section {
   }
 
   .cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .how-container {
     grid-template-columns: 1fr;
   }
-
-}.card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.8s ease forwards;
 }
-
-.card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.card:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}/* ================= MOBILE FIX (PROPER PHONE OPTIMIZATION) ================= */
 
 @media (max-width: 768px) {
 
-  /* Reduce global section padding */
   section {
     padding: 70px 20px;
   }
 
-  /* HERO */
   .hero {
     padding-top: 120px;
     padding-bottom: 80px;
@@ -317,65 +271,36 @@ section {
 
   .hero-left h1 {
     font-size: 34px;
-    line-height: 1.25;
-  }
-
-  .hero-left p {
-    font-size: 16px;
-    margin-top: 20px;
   }
 
   .hero-buttons {
     flex-direction: column;
-    gap: 15px;
   }
 
   .btn-primary,
   .btn-outline {
     width: 100%;
-    padding: 14px;
+    text-align: center;
   }
 
-  .hero-right img {
-    max-width: 100%;
-    margin-top: 30px;
-  }
-
-  /* HOW SECTION */
-  .how-section h2 {
-    font-size: 26px;
-    margin-bottom: 40px;
-  }
-
-  .how-card {
-    padding: 30px 20px;
-  }
-
-  /* FEATURED */
-  .featured {
-    padding: 70px 20px;
-  }
-
-  .featured h2 {
-    font-size: 26px;
-    margin-bottom: 40px;
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 25px;
   }
 
   .card img {
-    height: 180px;
+    height: 190px;
   }
 
-  /* CTA */
-  .cta {
-    padding-top: 80px;
-    padding-bottom: 80px;
+  .card h3 {
+    font-size: 18px;
   }
 
-  .cta h2 {
-    font-size: 26px;
+  .browse-btn {
+    width: 100%;
+    max-width: 320px;
   }
 
-  /* FOOTER */
   .footer {
     padding: 60px 20px;
     text-align: center;

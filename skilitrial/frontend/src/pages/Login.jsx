@@ -25,7 +25,7 @@ function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      // 🔥 Role-based redirect
+      // Redirect ONLY after successful login
       if (res.data.user.role === "recruiter") {
         navigate("/recruiter-dashboard");
       } else {

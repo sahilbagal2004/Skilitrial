@@ -33,12 +33,10 @@ function Navbar() {
       transition={{ duration: 0.4 }}
       className={`navbar ${scrolled ? "scrolled" : ""}`}
     >
-      {/* LOGO */}
       <NavLink to="/" className="logo">
         <img src={logo} alt="Skilitrial Logo" />
       </NavLink>
 
-      {/* HAMBURGER */}
       <div
         className={`hamburger ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -48,35 +46,17 @@ function Navbar() {
         <span></span>
       </div>
 
-      {/* NAV LINKS */}
       <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-        <NavLink to="/browse-trials" onClick={() => setMenuOpen(false)}>
-          Browse Trials
-        </NavLink>
-
-        {/* ✅ SCROLL LINK INSTEAD OF ROUTE */}
-        <a href="#how-it-works" onClick={() => setMenuOpen(false)}>
-          How It Works
-        </a>
-
-        <NavLink to="/post-job" onClick={() => setMenuOpen(false)}>
-          Post a Job
-        </NavLink>
+        <NavLink to="/browse-trials">Browse Trials</NavLink>
+        <a href="#how-it-works">How It Works</a>
+        <NavLink to="/post-job">Post a Job</NavLink>
 
         <div className="auth-buttons">
-          <NavLink
-            to="/login"
-            className="btn-login"
-            onClick={() => setMenuOpen(false)}
-          >
+          <NavLink to="/login" className="btn-login">
             Log In
           </NavLink>
 
-          <NavLink
-            to="/register"
-            className="btn-start"
-            onClick={() => setMenuOpen(false)}
-          >
+          <NavLink to="/register" className="btn-start">
             Get Started
           </NavLink>
         </div>

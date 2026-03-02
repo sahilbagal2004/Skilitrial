@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import jobRoutes from "./routes/jobs.js";
 import uploadRoute from "./routes/upload.js";
 import authRoutes from "./routes/auth.js";
+import applicationRoutes from "./routes/applicationRoutes.js"; // ✅ ADD THIS
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/upload", uploadRoute);
+app.use("/api/applications", applicationRoutes); // ✅ ADD THIS
 
 /* ================= ROOT ================= */
 

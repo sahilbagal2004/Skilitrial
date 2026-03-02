@@ -1,0 +1,50 @@
+.skill-container {
+  min-height: 100vh;
+  padding: 40px;
+  background: #f8fafc;
+}
+
+.skill-container h2 {
+  margin-bottom: 20px;
+}
+
+.file-input {
+  margin-bottom: 20px;
+}
+
+.preview-box {
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #ddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #2563eb;
+  border-radius: 10px;
+}
+
+.upload-btn {
+  background: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.upload-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .skill-container {
+    padding: 20px;
+  }
+}
