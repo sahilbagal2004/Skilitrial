@@ -24,17 +24,14 @@ function Dashboard() {
       }
 
       try {
-        // 🔹 Fetch Profile
         const profileRes = await axios.get(`${API}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(profileRes.data);
 
-        // 🔹 Fetch Jobs
         const jobsRes = await axios.get(`${API}/api/jobs`);
         setJobs(jobsRes.data);
 
-        // 🔹 Fetch Applied Jobs
         const appRes = await axios.get(
           `${API}/api/applications/my-applications`,
           {
@@ -42,7 +39,9 @@ function Dashboard() {
           }
         );
 
-        const appliedIds = appRes.data.map((app) => app.job);
+        const appliedIds = appRes.data.map((app) =>
+          app.job?._id ? app.job._id : app.job
+        );
         setAppliedJobs(appliedIds);
 
       } catch (err) {
@@ -57,7 +56,6 @@ function Dashboard() {
     fetchData();
   }, [navigate, API]);
 
-  // 🔹 Apply Job
   const handleApply = async (jobId) => {
     const token = localStorage.getItem("token");
 
@@ -83,7 +81,7 @@ function Dashboard() {
   };
 
   const filteredJobs = jobs.filter((job) =>
-    job.title.toLowerCase().includes(search.toLowerCase())
+    job.title?.toLowerCase().includes(search.toLowerCase())
   );
 
   if (loading) {
@@ -96,12 +94,9 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-
-      {/* ================= SIDEBAR ================= */}
       <aside className="sidebar">
         <div>
           <h2 className="logo">Skilitrial</h2>
-
           <ul>
             <li className={location.pathname === "/dashboard" ? "active" : ""}>
               Dashboard
@@ -117,10 +112,8 @@ function Dashboard() {
         </button>
       </aside>
 
-      {/* ================= MAIN ================= */}
       <main className="main">
 
-        {/* ================= TOPBAR ================= */}
         <div className="topbar">
           <input
             type="text"
@@ -140,7 +133,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* ================= STATS ================= */}
         <div className="stats">
           <div className="stat-card">
             <span>Total Jobs</span>
@@ -158,9 +150,7 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* ================= CONTENT ================= */}
         <div className="content">
-
           <div className="left-panel">
             <h3>Available Jobs</h3>
 
@@ -170,16 +160,34 @@ function Dashboard() {
               filteredJobs.map((job) => (
                 <div key={job._id} className="job-card">
 
-                  <div className="job-info">
-                    <h4>{job.title}</h4>
-                    <p>{job.company} • {job.location}</p>
-                    <p>💰 {job.salary}</p>
+                  <div className="job-header">
+
+                    <img
+                      src={
+                        job.companyLogo ||
+                        `https://logo.clearbit.com/${job.company?.toLowerCase().replace(/\s/g, "")}.com`
+                      }
+                      alt={job.company}
+                      className="company-logo"
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/50";
+                      }}
+                    />
+
+                    <div>
+                      <h4>{job.title}</h4>
+                      <p>{job.company} • {job.location}</p>
+                    </div>
+
+                  </div>
+
+                  <div className="job-details">
+                    <p>💰 {job.salary || "Not Disclosed"}</p>
                     <p>{job.type}</p>
+                    <p>👥 {job.applicantsCount || 0} Applicants</p>
                   </div>
 
                   <div className="job-actions">
-
-                    {/* 🔹 Internal Apply */}
                     <button
                       className={`apply-btn ${
                         appliedJobs.includes(job._id) ? "applied" : ""
@@ -192,7 +200,6 @@ function Dashboard() {
                         : "Apply Now"}
                     </button>
 
-                    {/* 🔹 External Apply */}
                     {job.applicationLink && (
                       <a
                         href={job.applicationLink}
@@ -203,22 +210,19 @@ function Dashboard() {
                         Apply on Company Website
                       </a>
                     )}
-
                   </div>
+
                 </div>
               ))
             )}
           </div>
 
-          {/* ================= PROFILE ================= */}
           <div className="right-panel">
             <h3>Your Profile</h3>
-
             <div className="profile-box">
               <div className="profile-avatar">
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
-
               <p><strong>Name:</strong> {user?.name}</p>
               <p><strong>Email:</strong> {user?.email}</p>
               <p><strong>Role:</strong> {user?.role}</p>
