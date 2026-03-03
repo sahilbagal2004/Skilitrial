@@ -1,35 +1,85 @@
+import { useState, useEffect } from "react";
 import "./OfficeAdminTrial.css";
-import { Link } from "react-router-dom";
 
 function OfficeAdminTrial() {
+  const [started, setStarted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(1800); // 30 minutes
+
+  useEffect(() => {
+    if (!started) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [started]);
+
+  const formatTime = () => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  // ================= BEFORE START =================
+  if (!started) {
+    return (
+      <div className="trial-container">
+        <div className="trial-card">
+          <h1>Office Admin Task</h1>
+          <p className="subtitle">
+            Demonstrate Excel skills and workflow efficiency.
+          </p>
+
+          <ul>
+            <li>Create formatted Excel sheet</li>
+            <li>Use SUM, IF, VLOOKUP</li>
+            <li>Organize data properly</li>
+            <li>Submit clean output</li>
+          </ul>
+
+          <button
+            className="start-btn"
+            onClick={() => setStarted(true)}
+          >
+            Start Trial
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ================= AFTER START =================
   return (
-    <div className="office-trial-page">
-      <div className="office-trial-container">
+    <div className="trial-container">
+      <div className="trial-card">
+        <div className="trial-header">
+          <h1>Office Admin Practical Task</h1>
+          <div className="timer-badge">
+            ⏳ {formatTime()}
+          </div>
+        </div>
 
-        <h1>Office Admin Task</h1>
-
-        <p className="trial-description">
-          Demonstrate Excel skills, organization ability, and workflow efficiency.
+        <p className="subtitle">
+          Create an Excel sheet containing the following:
         </p>
 
-        <div className="trial-box">
-          <h3>📝 Task Requirements</h3>
-          <ul>
-            <li>Create a formatted Excel sheet.</li>
-            <li>Use formulas (SUM, IF, VLOOKUP).</li>
-            <li>Organize data properly.</li>
-            <li>Submit clean and structured output.</li>
-          </ul>
+        <ul>
+          <li>Employee Name</li>
+          <li>Department</li>
+          <li>Salary</li>
+          <li>Bonus (10% of Salary)</li>
+          <li>Total Salary (Salary + Bonus)</li>
+        </ul>
+
+        <div className="upload-section">
+          <label>Upload Excel File:</label>
+          <input type="file" accept=".xlsx,.xls" />
         </div>
 
-        <div className="trial-actions">
-          <button className="start-btn">Start Trial</button>
-
-          <Link to="/" className="back-btn">
-            Go Back
-          </Link>
-        </div>
-
+        <button className="submit-btn">
+          Submit Trial
+        </button>
       </div>
     </div>
   );

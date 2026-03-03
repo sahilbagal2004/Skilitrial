@@ -1,0 +1,92 @@
+/* ===== PAGE BACKGROUND ===== */
+.trial-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e8edf7, #f8fafc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+}
+
+/* ===== MAIN CARD ===== */
+.trial-card {
+  width: 100%;
+  max-width: 1000px;
+  background: white;
+  padding: 70px 80px;
+  border-radius: 30px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* ===== TITLE ===== */
+.trial-card h1 {
+  font-size: 38px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 40px;
+}
+
+/* ===== SCENARIO BOX ===== */
+.scenario-box {
+  background: #f1f5f9;
+  padding: 30px 40px;
+  border-radius: 20px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #334155;
+  margin-bottom: 45px;
+}
+
+/* ===== TEXTAREA ===== */
+.response-input {
+  width: 100%;
+  min-height: 180px;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  resize: none;
+  outline: none;
+  margin-bottom: 45px;
+  transition: 0.3s ease;
+}
+
+.response-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.submit-btn {
+  padding: 14px 40px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .trial-card {
+    padding: 50px 30px;
+  }
+
+  .trial-card h1 {
+    font-size: 28px;
+  }
+
+  .scenario-box {
+    font-size: 16px;
+  }
+}

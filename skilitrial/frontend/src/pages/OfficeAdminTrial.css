@@ -1,58 +1,117 @@
-.office-trial-page {
+/* Background */
+.trial-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #eef4ff, #dbeafe);
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  align-items: center;
+  padding: 40px;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.office-trial-container {
+/* Card */
+.trial-card {
   background: white;
+  width: 100%;
+  max-width: 850px;
   padding: 50px;
   border-radius: 20px;
-  max-width: 750px;
-  width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
 }
 
-.trial-description {
-  margin-bottom: 30px;
-  color: #4b5563;
-}
-
-.trial-box {
-  background: #f8fbff;
-  padding: 25px;
-  border-radius: 12px;
-  margin-bottom: 30px;
-  text-align: left;
-}
-
-.trial-actions {
+/* Header */
+.trial-header {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.start-btn {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+.trial-card h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: #475569;
+  margin-bottom: 20px;
+}
+
+/* List Styling */
+.trial-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 25px 0;
+}
+
+.trial-card ul li {
+  margin: 12px 0;
+  padding-left: 28px;
+  position: relative;
+  color: #334155;
+  font-size: 16px;
+}
+
+.trial-card ul li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+/* Timer Badge */
+.timer-badge {
+  background: #1e40af;
   color: white;
-  padding: 12px 28px;
-  border-radius: 8px;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-weight: 600;
+}
+
+/* Buttons */
+.start-btn {
+  margin-top: 25px;
+  padding: 12px 30px;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
   border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+.submit-btn {
+  margin-top: 25px;
+  padding: 10px 25px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  transition: 0.3s;
 }
 
-.back-btn {
-  padding: 12px 28px;
-  border-radius: 8px;
-  background: white;
-  border: 1px solid #2563eb;
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 600;
+.submit-btn:hover {
+  background: #15803d;
+}
+
+/* Upload */
+.upload-section {
+  margin-top: 15px;
+}
+
+input[type="file"] {
+  margin-top: 10px;
 }

@@ -2,22 +2,20 @@ import "./CustomerSupportTrial.css";
 import { Link, useNavigate } from "react-router-dom";
 
 function CustomerSupportTrial() {
-
   const navigate = useNavigate();
 
   return (
     <div className="trial-page">
-
-      <div className="trial-container">
+      <div className="trial-card">
 
         <h1>Customer Support Trial</h1>
 
         <p className="trial-description">
-          Demonstrate your communication skills and ability to solve real
-          customer problems professionally.
+          Demonstrate your communication skills and ability to solve
+          real customer problems professionally.
         </p>
 
-        <div className="trial-box">
+        <div className="instruction-box">
           <h3>📝 Task Instructions</h3>
 
           <ul>
@@ -28,9 +26,7 @@ function CustomerSupportTrial() {
           </ul>
         </div>
 
-        <div className="trial-actions">
-
-          {/* ✅ Start Trial Button Now Clickable */}
+        <div className="button-group">
           <button
             className="start-btn"
             onClick={() => navigate("/trial/customer-support/start")}
@@ -41,7 +37,6 @@ function CustomerSupportTrial() {
           <Link to="/" className="back-btn">
             Go Back
           </Link>
-
         </div>
 
       </div>
