@@ -97,13 +97,35 @@ function Dashboard() {
       <aside className="sidebar">
         <div>
           <h2 className="logo">Skilitrial</h2>
+
           <ul>
-            <li className={location.pathname === "/dashboard" ? "active" : ""}>
+            <li
+              className={location.pathname === "/dashboard" ? "active" : ""}
+              onClick={() => navigate("/dashboard")}
+            >
               Dashboard
             </li>
-            <li>Skill Trials</li>
-            <li>Jobs</li>
-            <li>Reports</li>
+
+            <li
+              className={location.pathname === "/skill-trials" ? "active" : ""}
+              onClick={() => navigate("/skill-trials")}
+            >
+              Skill Trials
+            </li>
+
+            <li
+              className={location.pathname === "/jobs" ? "active" : ""}
+              onClick={() => navigate("/jobs")}
+            >
+              Jobs
+            </li>
+
+            <li
+              className={location.pathname === "/reports" ? "active" : ""}
+              onClick={() => navigate("/reports")}
+            >
+              Reports
+            </li>
           </ul>
         </div>
 

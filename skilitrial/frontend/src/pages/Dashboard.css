@@ -300,7 +300,9 @@
 .job-details {
   margin-bottom: 12px;
 }
-
+.sidebar ul li {
+  cursor: pointer;
+}
 /* ================= MOBILE RESPONSIVE ================= */
 @media (max-width: 900px) {
 
