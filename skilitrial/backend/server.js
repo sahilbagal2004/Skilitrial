@@ -15,32 +15,16 @@ const app = express();
 
 /* ================= CORS CONFIG ================= */
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://skilitria.vercel.app"
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-
-      // allow requests without origin (postman / curl)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("CORS not allowed by server"));
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: [
+      "http://localhost:5173",
+      "https://skilitria.vercel.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   })
 );
-
-/* Allow preflight requests */
-app.options("*", cors());
 
 /* ================= MIDDLEWARE ================= */
 
@@ -73,10 +57,7 @@ mongoose
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: "Server Error"
-  });
+  res.status(500).json({ message: "Something went wrong" });
 });
 
 /* ================= SERVER ================= */
