@@ -7,6 +7,7 @@ import jobRoutes from "./routes/jobs.js";
 import uploadRoute from "./routes/upload.js";
 import authRoutes from "./routes/auth.js";
 import applicationRoutes from "./routes/applicationRoutes.js"; // ✅ ADD THIS
+import paymentRoutes from "./routes/payment.js";
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/upload", uploadRoute);
 app.use("/api/applications", applicationRoutes); // ✅ ADD THIS
-
+app.use("/api/payment", paymentRoutes);
 /* ================= ROOT ================= */
 
 app.get("/", (req, res) => {

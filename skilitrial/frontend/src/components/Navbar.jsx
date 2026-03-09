@@ -33,10 +33,12 @@ function Navbar() {
       transition={{ duration: 0.4 }}
       className={`navbar ${scrolled ? "scrolled" : ""}`}
     >
+      {/* Logo */}
       <NavLink to="/" className="logo">
         <img src={logo} alt="Skilitrial Logo" />
       </NavLink>
 
+      {/* Hamburger */}
       <div
         className={`hamburger ${menuOpen ? "open" : ""}`}
         onClick={() => setMenuOpen(!menuOpen)}
@@ -46,11 +48,17 @@ function Navbar() {
         <span></span>
       </div>
 
+      {/* Nav Links */}
       <div className={`nav-links ${menuOpen ? "active" : ""}`}>
+
+        {/* NEW SUBSCRIPTION BUTTON */}
+        <NavLink to="/subscription">Subscription</NavLink>
+
         <NavLink to="/browse-trials">Browse Trials</NavLink>
         <a href="#how-it-works">How It Works</a>
         <NavLink to="/post-job">Post a Job</NavLink>
 
+        {/* Auth Buttons */}
         <div className="auth-buttons">
           <NavLink to="/login" className="btn-login">
             Log In

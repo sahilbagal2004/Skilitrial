@@ -13,6 +13,7 @@ import Jobs from "./pages/Jobs";
 import Reports from "./pages/Reports";
 import SkillTrials from "./pages/SkillTrials";
 import CustomerSupportTrialStart from "./pages/CustomerSupportTrialStart";
+import Subscription from "./pages/Subscription";
 
 // Trial Pages
 import CustomerSupportTrial from "./pages/CustomerSupportTrial";
@@ -123,6 +124,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/subscription" element={<Subscription />} />
 
       </Routes>
     </div>
