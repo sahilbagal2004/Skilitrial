@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./Subscription.css";
 
+const API = "https://skilitrial-backend.onrender.com"; // 🔹 YOUR BACKEND URL
+
 function Subscription() {
 
   const [coupon, setCoupon] = useState("");
@@ -30,7 +32,7 @@ function Subscription() {
 
       /* Create Order From Backend */
 
-      const res = await fetch("http://localhost:5000/api/payment/create-order", {
+      const res = await fetch(`${API}/api/payment/create-order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -42,7 +44,7 @@ function Subscription() {
 
       const options = {
 
-        key: "rzp_test_SPEFZI5LiOKKOR", // 🔑 PUT YOUR RAZORPAY TEST KEY
+        key: "rzp_test_SPEDgGnU1O1PfT", // 🔑 Your Razorpay key
 
         amount: order.amount,
         currency: "INR",
@@ -54,7 +56,7 @@ function Subscription() {
 
           /* Verify Payment */
 
-          const verify = await fetch("http://localhost:5000/api/payment/verify-payment", {
+          const verify = await fetch(`${API}/api/payment/verify-payment`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -90,7 +92,7 @@ function Subscription() {
     } catch (err) {
 
       console.error(err);
-      alert("Oops! Something went wrong.");
+      alert("Payment request failed. Check backend server.");
 
     }
 

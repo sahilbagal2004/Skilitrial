@@ -6,19 +6,39 @@ import dotenv from "dotenv";
 import jobRoutes from "./routes/jobs.js";
 import uploadRoute from "./routes/upload.js";
 import authRoutes from "./routes/auth.js";
-import applicationRoutes from "./routes/applicationRoutes.js"; // ✅ ADD THIS
+import applicationRoutes from "./routes/applicationRoutes.js";
 import paymentRoutes from "./routes/payment.js";
 
 dotenv.config();
 
 const app = express();
 
-/* ================= MIDDLEWARE ================= */
+/* ================= CORS CONFIG ================= */
 
-app.use(cors({
-  origin: process.env.CLIENT_URL || true,
-  credentials: true
-}));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://skilitria.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+
+      // allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS not allowed"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  })
+);
+
+/* ================= MIDDLEWARE ================= */
 
 app.use(express.json());
 
@@ -27,8 +47,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/upload", uploadRoute);
-app.use("/api/applications", applicationRoutes); // ✅ ADD THIS
+app.use("/api/applications", applicationRoutes);
 app.use("/api/payment", paymentRoutes);
+
 /* ================= ROOT ================= */
 
 app.get("/", (req, res) => {
