@@ -14,10 +14,10 @@ import Reports from "./pages/Reports";
 import SkillTrials from "./pages/SkillTrials";
 import CustomerSupportTrialStart from "./pages/CustomerSupportTrialStart";
 
-// ✅ Trial Pages
+// Trial Pages
 import CustomerSupportTrial from "./pages/CustomerSupportTrial";
 import JavaLoginTrial from "./pages/JavaLoginTrial";
-import JavaLoginStart from "./pages/JavaLoginStart";   // ✅ ADDED
+import JavaLoginStart from "./pages/JavaLoginStart";
 import OfficeAdminTrial from "./pages/OfficeAdminTrial";
 
 function App() {
@@ -32,7 +32,9 @@ function App() {
     "/jobs",
     "/reports",
     "/skill-trials",
-    "/profile"
+    "/profile",
+    "/browse-trials",
+    "/post-job"   // added here
   ];
 
   const shouldHideNavbar = hideNavbarRoutes.some((route) =>
@@ -41,24 +43,26 @@ function App() {
 
   return (
     <div className="app-wrapper">
+
+      {/* Navbar */}
       {!shouldHideNavbar && <Navbar />}
 
       <Routes>
 
-        {/* ===== Public Routes ===== */}
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/browse-trials" element={<BrowseTrials />} />
         <Route path="/post-job" element={<PostJob />} />
 
-        {/* ===== Trial Pages ===== */}
+        {/* Trial Pages */}
         <Route path="/customer-support-trial" element={<CustomerSupportTrial />} />
         <Route path="/java-login-trial" element={<JavaLoginTrial />} />
-        <Route path="/java-login-trial/start" element={<JavaLoginStart />} />   {/* ✅ ADDED */}
+        <Route path="/java-login-trial/start" element={<JavaLoginStart />} />
         <Route path="/office-admin-trial" element={<OfficeAdminTrial />} />
 
-        {/* ===== Candidate Protected Routes ===== */}
+        {/* Candidate Protected Routes */}
         <Route
           path="/dashboard"
           element={
@@ -94,12 +98,13 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-  path="/trial/customer-support/start"
-  element={<CustomerSupportTrialStart />}
-/>
 
-        {/* ===== Recruiter Protected Route ===== */}
+        <Route
+          path="/trial/customer-support/start"
+          element={<CustomerSupportTrialStart />}
+        />
+
+        {/* Recruiter Protected Route */}
         <Route
           path="/recruiter-dashboard"
           element={
@@ -109,7 +114,7 @@ function App() {
           }
         />
 
-        {/* ===== Profile ===== */}
+        {/* Profile */}
         <Route
           path="/profile"
           element={
