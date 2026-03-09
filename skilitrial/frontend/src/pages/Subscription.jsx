@@ -1,25 +1,24 @@
 import { useState } from "react";
 import "./Subscription.css";
 
-const API = "https://skilitrial-backend.onrender.com"; // 🔹 YOUR BACKEND URL
+const API = "https://skilitrial-backend.onrender.com";
 
 function Subscription() {
 
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   /* ================= APPLY COUPON ================= */
 
   const applyCoupon = () => {
-
     if (coupon === "SKILL10") {
       setDiscount(10);
       alert("Coupon Applied 🎉 10% Discount");
     } else {
       alert("Invalid Coupon");
     }
-
   };
 
   /* ================= PAYMENT ================= */
@@ -30,7 +29,9 @@ function Subscription() {
 
     try {
 
-      /* Create Order From Backend */
+      setLoading(true);
+
+      /* Create Razorpay order from backend */
 
       const res = await fetch(`${API}/api/payment/create-order`, {
         method: "POST",
@@ -40,11 +41,19 @@ function Subscription() {
         body: JSON.stringify({ amount: finalPrice })
       });
 
+      if (!res.ok) {
+        throw new Error("Order creation failed");
+      }
+
       const order = await res.json();
 
-      const options = {
+      if (!window.Razorpay) {
+        alert("Razorpay SDK not loaded");
+        return;
+      }
 
-        key: "rzp_test_SPEDgGnU1O1PfT", // 🔑 Your Razorpay key
+      const options = {
+        key: "rzp_test_SPEDgGnU1O1PfT",
 
         amount: order.amount,
         currency: "INR",
@@ -54,28 +63,32 @@ function Subscription() {
 
         handler: async function (response) {
 
-          /* Verify Payment */
+          try {
 
-          const verify = await fetch(`${API}/api/payment/verify-payment`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(response)
-          });
+            const verify = await fetch(`${API}/api/payment/verify-payment`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(response)
+            });
 
-          const result = await verify.json();
+            const result = await verify.json();
 
-          if (result.success) {
+            if (result.success) {
+              setSuccess(true);
 
-            setSuccess(true);
+              setTimeout(() => {
+                setSuccess(false);
+              }, 3000);
 
-            setTimeout(() => {
-              setSuccess(false);
-            }, 3000);
+            } else {
+              alert("Payment verification failed");
+            }
 
-          } else {
-            alert("Payment verification failed");
+          } catch (err) {
+            console.error(err);
+            alert("Verification error");
           }
 
         },
@@ -83,7 +96,6 @@ function Subscription() {
         theme: {
           color: "#4f46e5"
         }
-
       };
 
       const rzp = new window.Razorpay(options);
@@ -94,8 +106,9 @@ function Subscription() {
       console.error(err);
       alert("Payment request failed. Check backend server.");
 
+    } finally {
+      setLoading(false);
     }
-
   };
 
   return (
@@ -173,9 +186,10 @@ function Subscription() {
 
           <button
             className="plan-btn buy"
+            disabled={loading}
             onClick={() => handlePayment(499)}
           >
-            Buy Plan
+            {loading ? "Processing..." : "Buy Plan"}
           </button>
 
         </div>
@@ -201,9 +215,10 @@ function Subscription() {
 
           <button
             className="plan-btn buy"
+            disabled={loading}
             onClick={() => handlePayment(999)}
           >
-            Buy Plan
+            {loading ? "Processing..." : "Buy Plan"}
           </button>
 
         </div>
@@ -213,11 +228,9 @@ function Subscription() {
       {/* ================= SUCCESS POPUP ================= */}
 
       {success && (
-
         <div className="payment-success">
           🎉 Payment Successful! Subscription Activated.
         </div>
-
       )}
 
     </div>

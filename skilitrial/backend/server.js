@@ -13,13 +13,16 @@ dotenv.config();
 
 const app = express();
 
-/* ================= CORS FIX ================= */
+/* ================= CORS ================= */
 
 app.use(
   cors({
-    origin: "*",   // temporarily allow all origins
+    origin: [
+      "http://localhost:5173",
+      "https://skilitria.vercel.app"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    credentials: true
   })
 );
 
@@ -41,7 +44,7 @@ app.get("/", (req, res) => {
   res.send("Skilitrial API Running 🚀");
 });
 
-/* ================= DB CONNECT ================= */
+/* ================= DATABASE ================= */
 
 mongoose
   .connect(process.env.MONGO_URI, {
