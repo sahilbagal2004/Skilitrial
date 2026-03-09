@@ -24,19 +24,23 @@ app.use(
   cors({
     origin: function (origin, callback) {
 
-      // allow requests with no origin (mobile apps, curl, etc.)
+      // allow requests without origin (postman / curl)
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
-      return callback(new Error("CORS not allowed"));
+      return callback(new Error("CORS not allowed by server"));
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
   })
 );
+
+/* Allow preflight requests */
+app.options("*", cors());
 
 /* ================= MIDDLEWARE ================= */
 
@@ -69,7 +73,10 @@ mongoose
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ message: "Something went wrong" });
+  res.status(500).json({
+    success: false,
+    message: "Server Error"
+  });
 });
 
 /* ================= SERVER ================= */
@@ -77,5 +84,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
