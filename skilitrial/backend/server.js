@@ -22,7 +22,7 @@ app.use(
       "https://skilitria.vercel.app"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 
@@ -38,7 +38,7 @@ app.use("/api/upload", uploadRoute);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/payment", paymentRoutes);
 
-/* ================= ROOT ================= */
+/* ================= TEST ROUTE ================= */
 
 app.get("/", (req, res) => {
   res.send("Skilitrial API Running 🚀");
@@ -52,13 +52,6 @@ mongoose
   })
   .then(() => console.log("MongoDB Connected ✅"))
   .catch((err) => console.error("Mongo Error:", err));
-
-/* ================= ERROR HANDLER ================= */
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Something went wrong" });
-});
 
 /* ================= SERVER ================= */
 
