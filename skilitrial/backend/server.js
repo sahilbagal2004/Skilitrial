@@ -13,16 +13,13 @@ dotenv.config();
 
 const app = express();
 
-/* ================= CORS CONFIG ================= */
+/* ================= CORS FIX ================= */
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://skilitria.vercel.app"
-    ],
+    origin: "*",   // temporarily allow all origins
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 
@@ -53,7 +50,7 @@ mongoose
   .then(() => console.log("MongoDB Connected ✅"))
   .catch((err) => console.error("Mongo Error:", err));
 
-/* ================= GLOBAL ERROR HANDLER ================= */
+/* ================= ERROR HANDLER ================= */
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
