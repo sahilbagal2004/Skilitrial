@@ -1,26 +1,57 @@
-/* SkillTrials.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+/* ─────────────────────────────────────────
+   SKILITRIAL — SkillTrials.css
+   Aesthetic: Dark refined · Cinzel headlines
+   ───────────────────────────────────────── */
 
 .skill-page-wrapper {
   min-height: calc(100vh - 60px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
-  padding: 40px 20px;
-  font-family: 'Inter', sans-serif;
-  color: #334155;
+  background: var(--bg, #0a0a0f);
+  padding: 40px 6vw;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  color: var(--text, #f0eefc);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Effects (Matching Home.jsx) */
+.skill-page-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.skill-glow {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  height: 60vw;
+  max-width: 800px;
+  max-height: 800px;
+  background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .skill-container {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 600px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: var(--bg-2, #111118);
+  border: 1px solid var(--border-2, rgba(255,255,255,0.12));
+  border-radius: var(--radius-lg, 24px);
+  box-shadow: var(--shadow-sm, 0 2px 12px rgba(0,0,0,0.4));
   padding: 40px;
   overflow: hidden;
 }
@@ -33,13 +64,13 @@
 .skill-icon-wrap {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent, #6c63ff) 0%, var(--accent-2, #a78bfa) 100%);
+  border-radius: var(--radius-md, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
-  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
+  box-shadow: var(--shadow-glow, 0 0 60px rgba(108,99,255,0.15));
 }
 
 .header-icon {
@@ -49,33 +80,34 @@
 }
 
 .skill-header h2 {
-  font-size: 1.75rem;
+  font-family: var(--font-head, 'Cinzel', serif);
+  font-size: clamp(1.75rem, 3.5vw, 2.2rem);
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text, #f0eefc);
   margin: 0 0 8px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .skill-header p {
-  color: #64748b;
+  color: var(--text-muted, #8a87a8);
   font-size: 1rem;
   margin: 0;
 }
 
 /* Drop Zone Styles */
 .drop-zone {
-  border: 2px dashed #cbd5e1;
-  border-radius: 20px;
+  border: 2px dashed var(--border-2, rgba(255,255,255,0.12));
+  border-radius: var(--radius-lg, 24px);
   padding: 48px 24px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(248, 250, 252, 0.5);
+  transition: var(--transition, 0.3s cubic-bezier(0.4, 0, 0.2, 1));
+  background: rgba(255,255,255,0.02);
 }
 
 .drop-zone:hover, .drop-zone.active {
-  border-color: #3b82f6;
-  background: rgba(239, 246, 255, 0.7);
+  border-color: var(--accent-2, #a78bfa);
+  background: rgba(108,99,255,0.06);
 }
 
 .drop-zone.active {
@@ -85,37 +117,38 @@
 .cloud-icon {
   width: 48px;
   height: 48px;
-  color: #94a3b8;
+  color: var(--text-muted, #8a87a8);
   margin-bottom: 16px;
   transition: color 0.3s ease;
 }
 
 .drop-zone:hover .cloud-icon,
 .drop-zone.active .cloud-icon {
-  color: #3b82f6;
+  color: var(--accent-2, #a78bfa);
 }
 
 .drop-zone h3 {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: #334155;
+  font-weight: 500;
+  color: var(--text, #f0eefc);
   margin: 0 0 8px;
 }
 
 .drop-hint {
-  color: #64748b;
+  color: var(--text-muted, #8a87a8);
   font-size: 0.9rem;
   margin: 0 0 16px;
 }
 
 .file-types-badge {
   display: inline-block;
-  background: #e2e8f0;
-  color: #475569;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-2, rgba(255,255,255,0.12));
+  color: var(--text-muted, #8a87a8);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 6px 14px;
+  border-radius: 100px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -134,17 +167,16 @@
 .file-info-card {
   display: flex;
   align-items: center;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  background: var(--bg-3, #16161f);
+  border: 1px solid var(--border-2, rgba(255,255,255,0.12));
+  border-radius: var(--radius-md, 16px);
   padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .file-icon-container {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm, 8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,7 +190,7 @@
   width: 100%;
   height: 100%;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm, 8px);
 }
 
 .type-icon.audio {
@@ -167,18 +199,18 @@
   width: 100%;
   height: 100%;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm, 8px);
 }
 
 .file-details {
   flex-grow: 1;
-  min-width: 0; /* Important for text truncation */
+  min-width: 0;
 }
 
 .file-name {
   display: block;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 500;
+  color: var(--text, #f0eefc);
   font-size: 0.95rem;
   margin-bottom: 4px;
   white-space: nowrap;
@@ -189,14 +221,14 @@
 .file-size {
   display: block;
   font-size: 0.8rem;
-  color: #64748b;
-  font-weight: 500;
+  color: var(--text-muted, #8a87a8);
+  font-weight: 400;
 }
 
 .remove-btn {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted, #8a87a8);
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
@@ -207,24 +239,24 @@
 }
 
 .remove-btn:hover {
-  background: #f1f5f9;
+  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
 }
 
 .media-preview-box {
-  border-radius: 16px;
+  border-radius: var(--radius-md, 16px);
   overflow: hidden;
-  background: #0f172a;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: #000;
+  box-shadow: var(--shadow-sm, 0 2px 12px rgba(0,0,0,0.4));
   position: relative;
   aspect-ratio: 16/9;
+  border: 1px solid var(--border-2, rgba(255,255,255,0.12));
 }
 
 .media-preview-box.audio-preview {
   aspect-ratio: auto;
-  background: #f8fafc;
+  background: var(--bg-3, #16161f);
   padding: 20px;
-  border: 1px solid #e2e8f0;
 }
 
 .media-player {
@@ -248,22 +280,23 @@
   justify-content: space-between;
   margin-bottom: 8px;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #475569;
+  font-weight: 500;
+  color: var(--text-muted, #8a87a8);
 }
 
 .progress-bar-bg {
   height: 8px;
-  background: #e2e8f0;
-  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 100px;
   overflow: hidden;
 }
 
 .progress-fill-active {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
-  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent, #6c63ff) 0%, var(--accent-2, #a78bfa) 100%);
+  border-radius: 100px;
   position: relative;
+  box-shadow: 0 0 10px rgba(108,99,255,0.5);
 }
 
 /* Success Message */
@@ -271,16 +304,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: #4ade80;
   padding: 16px;
-  border-radius: 12px;
-  font-weight: 600;
+  border-radius: var(--radius-md, 16px);
+  font-weight: 500;
   gap: 12px;
 }
 
 .success-icon {
-  color: #22c55e;
+  color: #4ade80;
 }
 
 /* Action Buttons */
@@ -290,46 +324,52 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  background: #2563eb;
+  background: var(--accent, #6c63ff);
   color: white;
   padding: 14px 24px;
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 100px;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  transition: var(--transition, 0.3s cubic-bezier(0.4, 0, 0.2, 1));
+  box-shadow: 0 4px 20px rgba(108,99,255,0.35);
 }
 
 .action-btn:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: var(--accent-2, #a78bfa);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 6px 28px rgba(108,99,255,0.5);
 }
+
+.action-btn svg { transition: transform 0.25s ease; }
+.action-btn:hover:not(:disabled) svg { transform: translateX(3px); }
 
 .action-btn:active:not(:disabled) {
   transform: translateY(0);
 }
 
 .action-btn:disabled, .action-btn.uploading {
-  background: #94a3b8;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
   box-shadow: none;
   cursor: not-allowed;
-  opacity: 0.9;
+  transform: none;
 }
 
 .outline-btn {
   background: transparent;
-  color: #2563eb;
-  border: 2px solid #2563eb;
+  color: var(--text, #f0eefc);
+  border: 1px solid var(--border-2, rgba(255,255,255,0.12));
   box-shadow: none;
 }
 
 .outline-btn:hover {
-  background: #eff6ff;
-  border-color: #1d4ed8;
-  color: #1d4ed8;
+  background: rgba(108,99,255,0.06);
+  border-color: var(--accent-2, #a78bfa);
+  color: var(--accent-2, #a78bfa);
+  box-shadow: none;
 }
 
 .btn-icon {
@@ -356,10 +396,5 @@
   
   .skill-container {
     padding: 24px 20px;
-    border-radius: 20px;
-  }
-
-  .skill-header h2 {
-    font-size: 1.5rem;
   }
 }
