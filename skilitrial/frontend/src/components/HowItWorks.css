@@ -1,103 +1,285 @@
-.how-section {
-  padding: 120px 8%;
-  background: linear-gradient(to bottom, #f8fafc, #eef2f7);
-  text-align: center;
+/* ─────────────────────────────────────────
+   SKILITRIAL — HowItWorks.css
+   Matches: dark refined Home/Navbar aesthetic
+   ───────────────────────────────────────── */
+
+:root {
+  --bg:          #0a0a0f;
+  --bg-2:        #111118;
+  --bg-3:        #16161f;
+  --border:      rgba(255,255,255,0.07);
+  --border-2:    rgba(255,255,255,0.12);
+  --text:        #f0eefc;
+  --text-muted:  #8a87a8;
+  --accent:      #6c63ff;
+  --accent-2:    #a78bfa;
+  --font-head:   'Cinzel', serif;
+  --font-body:   'DM Sans', sans-serif;
+  --transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-md:   16px;
+  --radius-lg:   24px;
 }
 
-.how-title {
-  font-size: 42px;
-  font-weight: 700;
-  margin-bottom: 70px;
-  color: #1e293b;
-}
-
-.how-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.how-card {
-  background: white;
-  padding: 50px 30px;
-  border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
-  transition: 0.4s ease;
-  cursor: pointer;
-  position: relative;   /* IMPORTANT */
-}
-
-.how-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.08);
-}
-
-/* ========================= */
-/* HOVER ARROW */
-/* ========================= */
-
-.hover-arrow {
-  position: absolute;
-  bottom: 25px;
-  right: 30px;
-  font-size: 26px;        /* slightly bigger */
-  font-weight: bold;
-  color: #ff7a00;
-  opacity: 0;
-  transform: translateX(-15px);
-  transition: all 0.3s ease;
-}
-
-.how-card:hover .hover-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.icon-circle {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  margin: 0 auto 25px;
-  color: white;
-}
-
-.how-card h3 {
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.how-card p {
-  font-size: 16px;
-  color: #64748b;
-  line-height: 1.6;
-}
-#how-it-works {
-  scroll-margin-top: 100px;
-}
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #eee;
-  margin-top: 10px;
-  border-radius: 10px;
+/* ── Section ── */
+.hiw-section {
+  position: relative;
+  padding: 110px 6vw;
+  background: var(--bg);
   overflow: hidden;
 }
 
-.progress-fill {
-  height: 100%;
-  background: #ff7a00;
-  transition: width 0.3s ease;
+/* Subtle dot-grid background */
+.hiw-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
 }
 
+.hiw-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.hiw-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.hiw-label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 12px;
+}
+
+.hiw-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.hiw-subtitle {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Cards Grid ── */
+.hiw-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+}
+
+/* ── Individual Card ── */
+.hiw-card {
+  position: relative;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px 28px;
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: visible;
+}
+
+.hiw-card:hover {
+  border-color: rgba(108,99,255,0.4);
+  box-shadow:
+    0 20px 48px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(108,99,255,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  background: var(--bg-3);
+}
+
+/* Step number — top right watermark */
+.hiw-step-num {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: var(--font-head);
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: rgba(108,99,255,0.08);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  transition: color var(--transition);
+}
+.hiw-card:hover .hiw-step-num {
+  color: rgba(108,99,255,0.14);
+}
+
+/* Connector between cards */
+.hiw-connector {
+  display: none; /* shown via pseudo-element in grid layout */
+}
+
+/* ── Icon ── */
+.hiw-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(108,99,255,0.1);
+  border: 1px solid rgba(108,99,255,0.2);
+  color: var(--accent-2);
+  margin-bottom: 4px;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+.hiw-card:hover .hiw-icon {
+  background: rgba(108,99,255,0.18);
+  box-shadow: 0 0 20px rgba(108,99,255,0.2);
+}
+
+/* ── Text ── */
+.hiw-card-title {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.hiw-card-desc {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  flex: 1;
+}
+
+/* ── Upload Preview ── */
+.hiw-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.hiw-preview video {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border-2);
+  background: #000;
+  max-height: 160px;
+  object-fit: cover;
+}
+
+/* Progress bar */
+.hiw-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hiw-progress-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.hiw-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 2px;
+}
+.hiw-progress-label {
+  font-size: 0.72rem;
+  color: var(--accent-2);
+  font-weight: 600;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ── CTA Row ── */
+.hiw-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-2);
+  transition: gap var(--transition), color var(--transition);
+}
+.hiw-card:hover .hiw-card-cta {
+  gap: 10px;
+  color: #fff;
+}
+.hiw-card-cta svg {
+  transition: transform var(--transition);
+}
+.hiw-card:hover .hiw-card-cta svg {
+  transform: translateX(3px);
+}
+
+/* ── Step connector lines (desktop) ── */
+.hiw-cards::before,
+.hiw-cards::after {
+  content: '';
+  position: absolute;
+  top: 62px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(108,99,255,0.3), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+/* Line between card 1→2 */
+.hiw-cards::before {
+  left: calc(33.33% - 10px);
+  width: calc(33.33% + 20px);
+}
+/* Line between card 2→3 */
+.hiw-cards::after {
+  left: calc(66.66% - 10px);
+  width: calc(33.33% + 20px);
+}
+
+/* ── Responsive ── */
 @media (max-width: 900px) {
-  .how-container {
+  .hiw-cards {
     grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .hiw-cards::before,
+  .hiw-cards::after {
+    display: none;
+  }
+  .hiw-section {
+    padding: 80px 5vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .hiw-card {
+    padding: 28px 20px 22px;
+  }
+  .hiw-title {
+    font-size: 1.8rem;
   }
 }

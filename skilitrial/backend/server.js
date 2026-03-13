@@ -1,7 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import dotenv from "dotenv";
 
 import jobRoutes from "./routes/jobs.js";
 import uploadRoute from "./routes/upload.js";
@@ -9,26 +11,31 @@ import authRoutes from "./routes/auth.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import paymentRoutes from "./routes/payment.js";
 
-dotenv.config();
-
 const app = express();
 
 /* ================= CORS ================= */
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://skilitrial.vercel.app"
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://skilitria.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
   })
 );
 
 /* ================= MIDDLEWARE ================= */
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /* ================= ROUTES ================= */
 

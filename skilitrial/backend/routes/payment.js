@@ -1,38 +1,38 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
-import razorpay from "../config/razorpay.js";   // ✅ ADD HERE
+import Razorpay from "razorpay";
 import crypto from "crypto";
 
 const router = express.Router();
 
+/* Razorpay instance */
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET
+});
+
 /* ================= CREATE ORDER ================= */
 
 router.post("/create-order", async (req, res) => {
-
-  const { amount } = req.body;
-
-  const options = {
-    amount: amount * 100,
-    currency: "INR",
-    receipt: "receipt_" + Date.now()
-  };
-
   try {
+    const { amount } = req.body;
+
+    const options = {
+      amount: amount * 100,
+      currency: "INR",
+      receipt: "receipt_" + Date.now()
+    };
 
     const order = await razorpay.orders.create(options);
 
     res.json(order);
 
   } catch (err) {
-
     console.error(err);
-
-    res.status(500).json({
-      success: false,
-      message: "Order creation failed"
-    });
-
+    res.status(500).json({ message: "Order creation failed" });
   }
-
 });
 
 /* ================= VERIFY PAYMENT ================= */
@@ -49,19 +49,9 @@ router.post("/verify-payment", (req, res) => {
     .digest("hex");
 
   if (expectedSignature === razorpay_signature) {
-
-    res.json({
-      success: true,
-      message: "Payment verified"
-    });
-
+    res.json({ success: true });
   } else {
-
-    res.status(400).json({
-      success: false,
-      message: "Payment verification failed"
-    });
-
+    res.status(400).json({ success: false });
   }
 
 });
