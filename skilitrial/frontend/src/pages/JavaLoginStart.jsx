@@ -15,19 +15,16 @@ function JavaLoginStart() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Only parse appId so that user doesn't just hit this directly easily without intention
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmit(); // Auto submit
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (timeLeft <= 0) return;
+    const timer = setTimeout(() => setTimeLeft(l => l - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [timeLeft]);
+
+  useEffect(() => {
+    if (timeLeft === 0 && !isSubmitting) {
+      handleSubmit();
+    }
+  }, [timeLeft, isSubmitting]); // auto submit on timeout
 
   const formatTime = () => {
     const mins = Math.floor(timeLeft / 60);

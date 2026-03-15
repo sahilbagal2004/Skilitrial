@@ -5,4 +5,3 @@ const API = axios.create({
 });
 
 export default API;
-const res = await API.post("/auth/login", { email, password });

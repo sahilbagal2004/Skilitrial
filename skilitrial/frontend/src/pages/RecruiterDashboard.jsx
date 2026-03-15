@@ -87,7 +87,9 @@ function RecruiterDashboard() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(profileRes.data);
-      } catch {}
+      } catch (err) {
+        console.error(err);
+      }
     };
     fetchAll();
     fetchJobs();
