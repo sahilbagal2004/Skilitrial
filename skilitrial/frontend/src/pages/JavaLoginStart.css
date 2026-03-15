@@ -1,48 +1,331 @@
-.start-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #eef4ff, #dbeafe);
+/* JavaLoginStart.css */
+.jls-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #0f172a; /* Slate 900 */
+  color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+.jls-navbar {
+  height: 60px;
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom: 1px solid #1e293b;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.start-container {
-  background: white;
-  padding: 40px;
+.jls-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.jls-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.jls-nav-icon {
+  color: #38bdf8;
+  width: 24px;
+  height: 24px;
+}
+
+.jls-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.jls-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 6px 16px;
   border-radius: 20px;
-  max-width: 800px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  border: 1px solid #334155;
+  transition: all 0.3s ease;
 }
 
-.code-box {
-  width: 100%;
-  min-height: 200px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin: 20px 0;
+.jls-timer.danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.timer-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.jls-submit-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.jls-submit-top:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.jls-submit-top:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.jls-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.jls-sidebar {
+  width: 380px;
+  background: #0f172a;
+  border-right: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+.jls-panel-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #1e293b;
+  background: rgba(30, 41, 59, 0.3);
+}
+
+.jls-panel-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.jls-panel-content {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.jls-context {
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.jls-context code {
+  background: #1e293b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #38bdf8;
+  font-size: 0.9em;
+}
+
+.jls-task-box {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.jls-task-box h4 {
+  margin: 0 0 16px 0;
+  font-size: 1.05rem;
+  color: #f8fafc;
+}
+
+.jls-task-box ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jls-task-box li code {
+  color: #818cf8;
+  font-size: 0.9em;
+}
+
+.jls-alert {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  align-items: flex-start;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.alert-icon {
+  flex-shrink: 0;
+}
+
+.jls-alert.box-info {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: #7dd3fc;
+}
+
+.jls-alert p {
+  margin: 0;
+}
+
+/* Editor Area */
+.jls-editor-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #1e293b;
+}
+
+.jls-editor-header {
+  height: 40px;
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.tabs {
+  display: flex;
+  height: 100%;
+}
+
+.tab {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-right: 1px solid #1e293b;
+  border-left: 1px solid #1e293b;
+  position: relative;
   font-family: monospace;
 }
 
-.submit-btn {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  color: white;
-  padding: 12px 30px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
+.tab.active {
+  background: #1e293b;
+  color: #e2e8f0;
 }
 
-@media (max-width: 768px) {
-  .start-container {
-    padding: 25px;
-  }
+.tab.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #38bdf8;
+}
 
-  .submit-btn {
+.jls-lang-badge {
+  background: #334155;
+  color: #cbd5e1;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.jls-editor-container {
+  flex: 1;
+  position: relative;
+  /* padding: 20px; */
+}
+
+.jls-code-input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: #cbd5e1;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  border: none;
+  resize: none;
+  outline: none;
+  padding: 20px;
+  caret-color: #38bdf8;
+}
+
+.jls-code-input::placeholder {
+  color: #475569;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+@media (max-width: 900px) {
+  .jls-layout {
+    flex-direction: column;
+  }
+  .jls-sidebar {
     width: 100%;
+    height: 40%;
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
   }
 }
