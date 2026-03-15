@@ -80,6 +80,27 @@ router.get(
   }
 );
 
+// Get all applicants for all recruiter's jobs
+router.get(
+  "/my-applicants",
+  authMiddleware,
+  roleMiddleware("recruiter"),
+  async (req, res) => {
+    try {
+      const jobs = await Job.find({ recruiter: req.user.id }).select('_id');
+      const jobIds = jobs.map(j => j._id);
+
+      const applications = await Application.find({ job: { $in: jobIds } })
+        .populate("candidate", "name email")
+        .populate("job", "title company");
+
+      res.json(applications);
+    } catch (err) {
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+);
+
 // Get applicants for specific job
 router.get(
   "/:jobId/applicants",
