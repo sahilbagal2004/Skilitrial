@@ -1,11 +1,29 @@
 import "./CustomerSupportTrialStart.css";
 import { useState } from "react";
+import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 function CustomerSupportTrialStart() {
   const [response, setResponse] = useState("");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL || "";
 
-  const handleSubmit = () => {
-    alert("Response submitted!");
+  const handleSubmit = async () => {
+    if (!response.trim()) return;
+    try {
+      const token = localStorage.getItem("token");
+      const appId = searchParams.get("appId");
+      await axios.post(
+        `${API}/api/trials/complete-trial`,
+        { applicationId: appId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Response submitted successfully! You can now check your dashboard.");
+      navigate("/dashboard");
+    } catch (err) {
+      alert("Error submitting trial.");
+    }
   };
 
   return (

@@ -10,6 +10,7 @@ import uploadRoute from "./routes/upload.js";
 import authRoutes from "./routes/auth.js";
 import applicationRoutes from "./routes/applicationRoutes.js";
 import paymentRoutes from "./routes/payment.js";
+import trialRoutes from "./routes/trialRoutes.js";
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/upload", uploadRoute);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/trials", trialRoutes);
 
 /* ================= TEST ROUTE ================= */
 

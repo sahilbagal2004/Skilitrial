@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { CloudUpload, FileVideo, FileAudio, X, PlaySquare, CheckCircle, Upload, Music, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./SkillTrials.css";
@@ -15,6 +15,7 @@ function SkillTrials() {
   const fileInputRef = useRef(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const API = import.meta.env.VITE_API_URL || "";
 
   const handleDragEnter = (e) => {
@@ -113,7 +114,18 @@ function SkillTrials() {
       );
 
       setUploadSuccess(true);
-      console.log(res.data);
+      
+      const appId = new URLSearchParams(location.search).get("appId");
+      if (appId) {
+         try {
+           await axios.post(
+             `${API}/api/trials/complete-trial`,
+             { applicationId: appId },
+             { headers: { Authorization: `Bearer ${token}` } }
+           );
+         } catch(e) { console.error("Could not complete trial binding", e); }
+      }
+
     } catch (err) {
       console.error(err);
       alert("Upload failed. Please try again.");
@@ -264,9 +276,13 @@ function SkillTrials() {
               {uploadSuccess && (
                 <button 
                   className="action-btn outline-btn" 
-                  onClick={handleRemoveFile}
+                  onClick={() => {
+                    const appId = new URLSearchParams(location.search).get("appId");
+                    if (appId) navigate("/dashboard");
+                    else handleRemoveFile();
+                  }}
                 >
-                  Upload Another File
+                  {new URLSearchParams(location.search).get("appId") ? "Return to Dashboard" : "Upload Another File"}
                 </button>
               )}
             </motion.div>

@@ -66,7 +66,9 @@ function RecruiterApplicants() {
       const res = await axios.get(`${API}/api/jobs/my-applicants`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setApplications(res.data);
+      // Filter out candidates who haven't finished their required trials
+      const completedApps = res.data.filter(app => app.trialStatus !== "pending_trial");
+      setApplications(completedApps);
     } catch (err) {
       console.log("Failed to fetch applicants:", err);
     } finally {

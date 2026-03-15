@@ -1,6 +1,27 @@
 import "./JavaLoginStart.css";
+import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 function JavaLoginStart() {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL || "";
+
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const appId = searchParams.get("appId");
+      await axios.post(
+        `${API}/api/trials/complete-trial`,
+        { applicationId: appId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Trial submitted successfully! Returning to dashboard.");
+      navigate("/dashboard");
+    } catch (err) {
+      alert("Error submitting trial.");
+    }
+  };
   return (
     <div className="start-page">
       <div className="start-container">
@@ -16,7 +37,7 @@ function JavaLoginStart() {
           className="code-box"
         />
 
-        <button className="submit-btn">
+        <button className="submit-btn" onClick={handleSubmit}>
           Submit Trial
         </button>
       </div>

@@ -8,6 +8,7 @@ function PostJob() {
   const [jobData, setJobData] = useState({
     title: "", company: "", location: "",
     salary: "", type: "Remote", description: "", skills: [],
+    requiredTrial: "",
   });
   const [skillInput, setSkillInput] = useState("");
   const [logo, setLogo] = useState(null);
@@ -43,11 +44,23 @@ function PostJob() {
     applyLogo(e.dataTransfer.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Job Posted:", jobData, logoFile);
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 3500);
+    try {
+      const token = localStorage.getItem("token");
+      await fetch(import.meta.env.VITE_API_URL + "/api/jobs/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(jobData)
+      });
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3500);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fields = [
@@ -170,6 +183,31 @@ function PostJob() {
                     {t}
                   </button>
                 ))}
+              </div>
+            </div>
+
+            {/* Required Trial */}
+            <div className="pj-field">
+              <label>Required Skill Trial</label>
+              <div className="pj-input-wrap" style={{ padding: "0 14px" }}>
+                <span className="pj-input-icon">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" strokeWidth="1.3"/>
+                    <path d="M4.5 7.5l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+                <select 
+                  name="requiredTrial"
+                  value={jobData.requiredTrial}
+                  onChange={handleChange}
+                  className="pj-select"
+                  style={{ width: "100%", background: "transparent", border: "none", color: "var(--pj-ink)", outline: "none", padding: "12px 0", fontFamily: "inherit", fontSize: "0.9rem", cursor: "pointer" }}
+                >
+                  <option value="" style={{ color: "#000" }}>None (Direct Apply)</option>
+                  <option value="/java-login-trial" style={{ color: "#000" }}>Java Backend Trial</option>
+                  <option value="/customer-support-trial/start" style={{ color: "#000" }}>Customer Support Trial</option>
+                  <option value="/office-admin-trial" style={{ color: "#000" }}>Office Admin Trial</option>
+                </select>
               </div>
             </div>
 

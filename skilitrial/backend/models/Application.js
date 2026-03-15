@@ -19,6 +19,12 @@ const applicationSchema = new mongoose.Schema(
       enum: ["applied", "shortlisted", "rejected"],
       default: "applied",
     },
+
+    trialStatus: {
+      type: String,
+      enum: ["pending_trial", "completed", "not_required"],
+      default: "not_required",
+    },
   },
   { timestamps: true }
 );

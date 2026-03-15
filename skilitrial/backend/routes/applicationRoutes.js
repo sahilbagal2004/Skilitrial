@@ -26,10 +26,20 @@ router.post("/apply", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Already Applied" });
     }
 
+    // 🔹 Fetch the job to check for requiredTrial
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // 🔹 Determine trial status
+    const trialStatus = job.requiredTrial ? "pending_trial" : "not_required";
+
     // 🔹 Create application
     const newApplication = new Application({
       job: jobId,
       candidate: candidateId,
+      trialStatus: trialStatus,
     });
 
     await newApplication.save();
@@ -39,7 +49,11 @@ router.post("/apply", authMiddleware, async (req, res) => {
       $inc: { applicantsCount: 1 },
     });
 
-    res.status(201).json({ message: "Applied Successfully" });
+    res.status(201).json({ 
+      message: job.requiredTrial ? "Trial Required" : "Applied Successfully",
+      requiredTrial: job.requiredTrial,
+      applicationId: newApplication._id
+    });
 
   } catch (error) {
     console.error(error);

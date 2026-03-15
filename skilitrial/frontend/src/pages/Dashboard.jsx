@@ -106,6 +106,7 @@ function Dashboard() {
   const [search, setSearch]         = useState("");
   const [loading, setLoading]       = useState(true);
   const [appliedJobs, setAppliedJobs] = useState([]);
+  const [pendingTrialJobs, setPendingTrialJobs] = useState([]);
   const [applyingId, setApplyingId] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -126,6 +127,10 @@ function Dashboard() {
         setUser(profileRes.data);
         setJobs(jobsRes.data);
         setAppliedJobs(appRes.data.map((app) => app.job?._id ?? app.job));
+        setPendingTrialJobs(
+          appRes.data.filter(app => app.trialStatus === "pending_trial")
+            .map(app => app.job?._id ?? app.job)
+        );
       } catch {
         localStorage.removeItem("token");
         navigate("/login");
@@ -136,16 +141,29 @@ function Dashboard() {
     fetchData();
   }, [navigate, API]);
 
-  const handleApply = async (jobId) => {
+  const handleApply = async (job) => {
     const token = localStorage.getItem("token");
-    setApplyingId(jobId);
+    setApplyingId(job._id);
     try {
-      await axios.post(
+      // If we know it's pending, just redirect
+      if (pendingTrialJobs.includes(job._id) && job.requiredTrial) {
+        // We don't have appId readily available here without more state, 
+        // so we just redirect they'll have to rely on global complete mechanism
+        navigate(job.requiredTrial);
+        return;
+      }
+
+      const res = await axios.post(
         `${API}/api/applications/apply`,
-        { jobId },
+        { jobId: job._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setAppliedJobs((prev) => [...prev, jobId]);
+      
+      setAppliedJobs((prev) => [...prev, job._id]);
+      if (res.data.requiredTrial) {
+        setPendingTrialJobs((prev) => [...prev, job._id]);
+        navigate(`${res.data.requiredTrial}?appId=${res.data.applicationId}`);
+      }
     } catch { /* already applied */ }
     finally { setApplyingId(null); }
   };
@@ -333,6 +351,7 @@ function Dashboard() {
               <div className="dash-job-list">
                 {filteredJobs.map((job, i) => {
                   const isApplied  = appliedJobs.includes(job._id);
+                  const isPendingTrial = pendingTrialJobs.includes(job._id);
                   const isApplying = applyingId === job._id;
                   return (
                     <motion.div
@@ -377,12 +396,19 @@ function Dashboard() {
                       {/* Actions */}
                       <div className="djc-actions">
                         <button
-                          className={`djc-apply-btn ${isApplied ? "applied" : ""}`}
-                          onClick={() => !isApplied && handleApply(job._id)}
-                          disabled={isApplied || isApplying}
+                          className={`djc-apply-btn ${isApplied ? "applied" : ""} ${isPendingTrial ? "pending-trial" : ""}`}
+                          onClick={() => (!isApplied || isPendingTrial) && handleApply(job)}
+                          disabled={isApplied && !isPendingTrial || isApplying}
                         >
                           {isApplying ? (
                             <><span className="btn-spinner" /> Applying…</>
+                          ) : isPendingTrial ? (
+                            <>
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
+                              </svg>
+                              Complete Trial
+                            </>
                           ) : isApplied ? (
                             <>
                               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">

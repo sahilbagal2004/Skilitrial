@@ -62,6 +62,11 @@ const jobSchema = new mongoose.Schema(
       default: "",
     },
 
+    requiredTrial: {
+      type: String,
+      default: null, // Stores route of required trial, e.g. "/java-login-trial"
+    },
+
     status: {
       type: String,
       enum: ["open", "closed"],

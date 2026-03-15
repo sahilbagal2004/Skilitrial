@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import "./OfficeAdminTrial.css";
 
 function OfficeAdminTrial() {
   const [started, setStarted] = useState(false);
   const [timeLeft, setTimeLeft] = useState(1800); // 30 minutes
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL || "";
 
   useEffect(() => {
     if (!started) return;
@@ -19,6 +24,22 @@ function OfficeAdminTrial() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const appId = searchParams.get("appId");
+      await axios.post(
+        `${API}/api/trials/complete-trial`,
+        { applicationId: appId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Excel sheet submitted! Returning to dashboard.");
+      navigate("/dashboard");
+    } catch (err) {
+      alert("Error submitting trial.");
+    }
   };
 
   // ================= BEFORE START =================
@@ -77,7 +98,7 @@ function OfficeAdminTrial() {
           <input type="file" accept=".xlsx,.xls" />
         </div>
 
-        <button className="submit-btn">
+        <button className="submit-btn" onClick={handleSubmit}>
           Submit Trial
         </button>
       </div>
