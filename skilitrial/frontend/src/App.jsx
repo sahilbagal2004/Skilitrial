@@ -14,6 +14,7 @@ import Reports from "./pages/Reports";
 import SkillTrials from "./pages/SkillTrials";
 import CustomerSupportTrialStart from "./pages/CustomerSupportTrialStart";
 import Subscription from "./pages/Subscription";
+import RecruiterMyJobs from "./pages/RecruiterMyJobs";
 
 // Trial Pages
 import CustomerSupportTrial from "./pages/CustomerSupportTrial";
@@ -35,7 +36,8 @@ function App() {
     "/skill-trials",
     "/profile",
     "/browse-trials",
-    "/post-job"   // added here
+    "/post-job",
+    "/recruiter-jobs"
   ];
 
   const shouldHideNavbar = hideNavbarRoutes.some((route) =>
@@ -111,6 +113,14 @@ function App() {
           element={
             <ProtectedRoute role="recruiter">
               <RecruiterDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/recruiter-jobs"
+          element={
+            <ProtectedRoute role="recruiter">
+              <RecruiterMyJobs />
             </ProtectedRoute>
           }
         />
