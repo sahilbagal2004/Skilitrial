@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, Trash2, Save, Loader2, Pencil } from "lucide-react";
+import { X, Plus, Trash2, Save, Loader2, Pencil, Sparkles, CheckCircle2, XCircle, TrendingUp, Zap } from "lucide-react";
 import "./Profile.css";
 
 function Profile() {
@@ -9,6 +9,8 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState(null);
+  const [aiInsights, setAiInsights] = useState(null);
+  const [aiLoading, setAiLoading] = useState(false);
 
   const API = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("token");
@@ -46,6 +48,24 @@ function Profile() {
   const showToast = (msg, type = "success") => {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleAIAnalyze = async () => {
+    if (!user) return;
+    setAiLoading(true);
+    setAiInsights(null);
+    try {
+      const res = await axios.post(`${API}/api/ai/analyze-profile`, {
+        name: user.name, headline: user.headline, bio: user.bio,
+        location: user.location, skills: user.skills, experience: user.experience,
+      }, { headers: { Authorization: `Bearer ${token}` } });
+      setAiInsights(res.data);
+    } catch (err) {
+      console.error(err);
+      showToast(err.response?.data?.message || "AI analysis failed. Check your Gemini API key.", "error");
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   const handleSave = async () => {
@@ -233,6 +253,105 @@ function Profile() {
 
         {/* ── Content Grid ── */}
         <div className="profile-grid-layout">
+
+          {/* AI Insights Card */}
+          <motion.div className="pcard pcard-full ai-card" custom={3} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <div className="pcard-header">
+              <div className="pcard-icon ai-icon">
+                <Sparkles size={16} />
+              </div>
+              <h2>AI Profile Insights</h2>
+              {aiInsights && <span className={`ai-grade grade-${aiInsights.grade}`}>{aiInsights.grade}</span>}
+              <button className="ai-analyze-btn" onClick={handleAIAnalyze} disabled={aiLoading}>
+                {aiLoading ? <><Loader2 size={14} className="spin" /> Analyzing...</> : <><Sparkles size={14} /> Analyze with AI</>}
+              </button>
+            </div>
+
+            {!aiInsights && !aiLoading && (
+              <div className="ai-empty">
+                <Sparkles size={36} className="ai-empty-icon" />
+                <p>Get an instant AI-powered analysis of your profile.</p>
+                <span>Our AI evaluates your bio, skills, and experience — then gives you a score, grade, and personalized tips to help you stand out to recruiters.</span>
+              </div>
+            )}
+
+            {aiLoading && (
+              <div className="ai-loading-state">
+                <div className="ai-pulsing">
+                  {[0.0, 0.15, 0.3].map((d, i) => (
+                    <div key={i} className="ai-pulse-dot" style={{ animationDelay: `${d}s` }} />
+                  ))}
+                </div>
+                <p>Analyzing your profile with Gemini AI…</p>
+              </div>
+            )}
+
+            {aiInsights && !aiLoading && (
+              <div className="ai-results">
+                {/* Score row */}
+                <div className="ai-score-row">
+                  <div className="ai-score-ring">
+                    <svg viewBox="0 0 80 80" width="80" height="80">
+                      <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(108,99,255,0.15)" strokeWidth="8"/>
+                      <circle cx="40" cy="40" r="32" fill="none"
+                        stroke={aiInsights.score >= 70 ? "#22c55e" : aiInsights.score >= 40 ? "#fbbf24" : "#ef4444"}
+                        strokeWidth="8"
+                        strokeDasharray={`${(aiInsights.score / 100) * 201} 201`}
+                        strokeLinecap="round"
+                        transform="rotate(-90 40 40)"
+                      />
+                    </svg>
+                    <span className="ai-score-num">{aiInsights.score}</span>
+                  </div>
+                  <div className="ai-score-info">
+                    <h3>Profile Score</h3>
+                    <p>{aiInsights.summary}</p>
+                  </div>
+                </div>
+
+                <div className="ai-cols">
+                  {/* Strengths */}
+                  <div className="ai-col">
+                    <div className="ai-col-title"><CheckCircle2 size={15} className="icon-green" /> Strengths</div>
+                    <ul className="ai-list">
+                      {aiInsights.strengths?.map((s, i) => <li key={i}>{s}</li>)}
+                    </ul>
+                  </div>
+
+                  {/* Improvements */}
+                  <div className="ai-col">
+                    <div className="ai-col-title"><XCircle size={15} className="icon-red" /> Needs Improvement</div>
+                    <ul className="ai-list">
+                      {aiInsights.improvements?.map((s, i) => <li key={i}>{s}</li>)}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Suggested Skills */}
+                {aiInsights.suggestedSkills?.length > 0 && (
+                  <div className="ai-skills-suggest">
+                    <div className="ai-col-title"><TrendingUp size={15} className="icon-blue" /> Suggested Skills to Add</div>
+                    <div className="ai-skill-tags">
+                      {aiInsights.suggestedSkills.map((skill, i) => (
+                        <span key={i} className="ai-skill-tag">{skill}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Headline Rewrite */}
+                {aiInsights.headlineRewrite && (
+                  <div className="ai-headline-rewrite">
+                    <Zap size={15} className="icon-yellow" />
+                    <div>
+                      <span className="rewrite-label">AI-Suggested Headline:</span>
+                      <p className="rewrite-text">{aiInsights.headlineRewrite}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </motion.div>
 
           {/* About */}
           <motion.div className="pcard" custom={0} variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
