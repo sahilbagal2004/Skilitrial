@@ -1,26 +1,101 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Plus, Trash2, Save, Loader2, Pencil } from "lucide-react";
 import "./Profile.css";
 
 function Profile() {
   const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const API = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
+
+  // Editable form state
+  const [form, setForm] = useState({
+    name: "", headline: "", bio: "", location: "",
+    skills: [], experience: [],
+  });
+
+  const [newSkill, setNewSkill] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const API = import.meta.env.VITE_API_URL;
         const res = await axios.get(`${API}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
+        setForm({
+          name: res.data.name || "",
+          headline: res.data.headline || "",
+          bio: res.data.bio || "",
+          location: res.data.location || "",
+          skills: res.data.skills || [],
+          experience: res.data.experience || [],
+        });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     fetchProfile();
-  }, []);
+  }, [API, token]);
+
+  const showToast = (msg, type = "success") => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await axios.put(`${API}/api/auth/update-profile`, form, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(res.data);
+      setIsEditing(false);
+      showToast("Profile updated successfully!");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to update profile.", "error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleAddSkill = () => {
+    const trimmed = newSkill.trim();
+    if (trimmed && !form.skills.includes(trimmed)) {
+      setForm(f => ({ ...f, skills: [...f.skills, trimmed] }));
+      setNewSkill("");
+    }
+  };
+
+  const handleRemoveSkill = (skill) => {
+    setForm(f => ({ ...f, skills: f.skills.filter(s => s !== skill) }));
+  };
+
+  const handleAddExperience = () => {
+    setForm(f => ({
+      ...f,
+      experience: [
+        ...f.experience,
+        { title: "", company: "", from: "", to: "", current: false, description: "" }
+      ],
+    }));
+  };
+
+  const handleExpChange = (i, field, value) => {
+    const updated = [...form.experience];
+    updated[i] = { ...updated[i], [field]: value };
+    setForm(f => ({ ...f, experience: updated }));
+  };
+
+  const handleRemoveExp = (i) => {
+    setForm(f => ({ ...f, experience: f.experience.filter((_, idx) => idx !== i) }));
+  };
 
   if (!user) {
     return (
@@ -51,6 +126,20 @@ function Profile() {
         <div className="profile-glow-2" />
         <div className="profile-grid" />
       </div>
+
+      {/* Toast */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            className={`profile-toast ${toast.type}`}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            {toast.msg}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="profile-page">
 
@@ -112,11 +201,8 @@ function Profile() {
               </div>
             </div>
 
-            {/* Edit */}
-            <button className="edit-btn">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M9.5 2.5l2 2L4 12H2v-2L9.5 2.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
-              </svg>
+            <button className="edit-btn" onClick={() => setIsEditing(true)}>
+              <Pencil size={13} />
               Edit Profile
             </button>
           </div>
@@ -234,6 +320,124 @@ function Profile() {
 
         </div>
       </div>
+
+      {/* ═══════════ EDIT MODAL ═══════════ */}
+      <AnimatePresence>
+        {isEditing && (
+          <>
+            <motion.div
+              className="modal-backdrop"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setIsEditing(false)}
+            />
+            <motion.div
+              className="edit-modal"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="edit-modal-header">
+                <h2>Edit Profile</h2>
+                <button className="modal-close-btn" onClick={() => setIsEditing(false)}>
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="edit-modal-body">
+                {/* Basic Info */}
+                <div className="edit-section-title">Basic Info</div>
+                <div className="edit-field">
+                  <label>Full Name</label>
+                  <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your full name" />
+                </div>
+                <div className="edit-field">
+                  <label>Headline</label>
+                  <input value={form.headline} onChange={e => setForm(f => ({ ...f, headline: e.target.value }))} placeholder="e.g. Java Backend Developer | Spring Boot" />
+                </div>
+                <div className="edit-field">
+                  <label>Location</label>
+                  <input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} placeholder="e.g. Mumbai, India" />
+                </div>
+                <div className="edit-field">
+                  <label>About / Bio</label>
+                  <textarea rows={4} value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))} placeholder="A short bio about yourself..." />
+                </div>
+
+                {/* Skills */}
+                <div className="edit-section-title">Skills</div>
+                <div className="skills-edit-grid">
+                  {form.skills.map((s, i) => (
+                    <span key={i} className="skill-edit-tag">
+                      {s}
+                      <button onClick={() => handleRemoveSkill(s)}><X size={11} /></button>
+                    </span>
+                  ))}
+                </div>
+                <div className="skill-add-row">
+                  <input
+                    value={newSkill}
+                    onChange={e => setNewSkill(e.target.value)}
+                    onKeyDown={e => e.key === "Enter" && handleAddSkill()}
+                    placeholder="Add a skill and press Enter"
+                  />
+                  <button className="add-skill-btn" onClick={handleAddSkill}><Plus size={16} /></button>
+                </div>
+
+                {/* Experience */}
+                <div className="edit-section-title" style={{ marginTop: "24px" }}>
+                  Experience
+                  <button className="add-exp-btn" onClick={handleAddExperience}><Plus size={15} /> Add Role</button>
+                </div>
+                {form.experience.map((exp, i) => (
+                  <div key={i} className="exp-edit-card">
+                    <div className="exp-edit-header">
+                      <span>Role #{i + 1}</span>
+                      <button className="remove-exp-btn" onClick={() => handleRemoveExp(i)}><Trash2 size={14} /></button>
+                    </div>
+                    <div className="edit-field">
+                      <label>Job Title</label>
+                      <input value={exp.title} onChange={e => handleExpChange(i, "title", e.target.value)} placeholder="e.g. Backend Engineer" />
+                    </div>
+                    <div className="edit-field">
+                      <label>Company</label>
+                      <input value={exp.company} onChange={e => handleExpChange(i, "company", e.target.value)} placeholder="e.g. Infosys" />
+                    </div>
+                    <div className="edit-row-2">
+                      <div className="edit-field">
+                        <label>From</label>
+                        <input type="date" value={exp.from ? exp.from.slice(0, 10) : ""} onChange={e => handleExpChange(i, "from", e.target.value)} />
+                      </div>
+                      <div className="edit-field">
+                        <label>To {exp.current ? "(current)" : ""}</label>
+                        <input type="date" value={exp.to ? exp.to.slice(0, 10) : ""} disabled={exp.current} onChange={e => handleExpChange(i, "to", e.target.value)} />
+                      </div>
+                      <div className="edit-field current-check">
+                        <label>
+                          <input type="checkbox" checked={exp.current} onChange={e => handleExpChange(i, "current", e.target.checked)} />
+                          Currently here
+                        </label>
+                      </div>
+                    </div>
+                    <div className="edit-field">
+                      <label>Description</label>
+                      <textarea rows={2} value={exp.description} onChange={e => handleExpChange(i, "description", e.target.value)} placeholder="What you did here..." />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="edit-modal-footer">
+                <button className="modal-cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
+                <button className="modal-save-btn" onClick={handleSave} disabled={saving}>
+                  {saving ? <Loader2 className="spin" size={16} /> : <Save size={16} />}
+                  {saving ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

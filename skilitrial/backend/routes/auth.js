@@ -79,13 +79,31 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// ================= PROFILE =================
+// ================= GET PROFILE =================
 router.get("/profile", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch (error) {
     console.error("Profile Error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ================= UPDATE PROFILE =================
+router.put("/update-profile", authMiddleware, async (req, res) => {
+  try {
+    const { name, headline, bio, location, skills, experience } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, headline, bio, location, skills, experience },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Update Profile Error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
