@@ -23,20 +23,24 @@ const allowedOrigins = [
   "https://skilitrial.vercel.app"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin) || origin.includes("vercel.app")) {
-        callback(null, origin);
-      } else {
-        callback(null, origin); // Always allow for now to resolve strict origin issues
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.) or from allowed origins
+    if (!origin || allowedOrigins.includes(origin) || origin.includes("vercel.app")) {
+      callback(null, origin || "*");
+    } else {
+      callback(null, origin); // Allow all for now
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
+// Explicitly handle preflight OPTIONS requests for all routes
+app.options("*", cors(corsOptions));
 
 /* ================= MIDDLEWARE ================= */
 
