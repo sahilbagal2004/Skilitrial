@@ -110,7 +110,7 @@ export default function Subscription() {
       const order = await res.json();
       if (!window.Razorpay) { alert("Razorpay SDK not loaded"); return; }
       const options = {
-        key: "rzp_test_SPEDgGnU1O1PfT",
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: "INR",
         name: "Skilitrial",
