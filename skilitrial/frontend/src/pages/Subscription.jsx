@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Subscription.css";
-
-const API = "https://skilitrial-backend.onrender.com";
-
+const API = import.meta.env.VITE_API_URL;
 const PLANS = [
   {
     id: "free",
